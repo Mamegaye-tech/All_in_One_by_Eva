@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->string('email');
+            $table->string('telephone');
+            $table->string('date_naissance');
+
 
 
             $table->timestamps();
