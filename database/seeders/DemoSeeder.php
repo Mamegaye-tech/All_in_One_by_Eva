@@ -24,8 +24,8 @@ class DemoSeeder extends Seeder
 {
     public function run(RendezVousService $rendezVous, PaiementService $paiements): void
     {
-        $admin = $this->utilisateur('Eva Diallo', 'admin@allinone.test', 'admin');
-        $this->utilisateur('Awa Ndiaye', 'accueil@allinone.test', 'receptionniste');
+        $admin = $this->utilisateur('Eva Diallo', 'admin@gmail.com', 'admin');
+        $this->utilisateur('Awa Ndiaye', 'accueil@agmail.com', 'receptionniste');
         Auth::login($admin);
 
         $equipe = [
