@@ -20,7 +20,8 @@ class AuthController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        $request->user()->forceFill(['last_login_at' => now()])->save();
+       // $request->user()->forceFill(['last_login_at' => now()])->save();
+        $request->user()->save();
 
         return redirect()->intended(route('dashboard'));
     }

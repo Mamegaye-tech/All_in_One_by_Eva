@@ -43,7 +43,7 @@ class LoginRequest extends FormRequest
         $identifiants = [
             'email'    => $this->input('email'),
             'password' => $this->input('password'),
-            'actif'    => true,
+            'is_active'    => true,
         ];
 
         if (! Auth::attempt($identifiants, $this->boolean('remember'))) {

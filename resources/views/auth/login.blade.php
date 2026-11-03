@@ -1,102 +1,129 @@
-@extends('layouts.guest')
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - All in One by Eva</title>
 
-@section('titre', 'Connexion')
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-@section('contenu')
-<div class="grid min-h-screen lg:grid-cols-2">
+    <style>
+        body {
+            background: #F8F3EF;
+            font-family: Arial, sans-serif;
+        }
 
-    {{-- Partie gauche : image et nom du salon --}}
-    <div class="relative hidden items-center justify-center overflow-hidden bg-rose-soft lg:flex"
-         style="background-image: linear-gradient(rgba(252,243,246,.55), rgba(252,243,246,.55)), url('{{ asset('images/login-bg.jpg') }}'); background-size: cover; background-position: center;">
-        <div class="px-10 text-center">
-            @if (file_exists(public_path('images/logo.png')))
-                <img src="{{ asset('images/logo.png') }}" alt="All in One by Eva" class="mx-auto mb-4 h-40 w-auto">
-            @endif
-            <h1 class="font-script text-7xl leading-tight text-bordeaux">All in One<br><span class="text-5xl">by Eva</span></h1>
-            <p class="mt-6 text-lg font-medium text-encre">Beauté • Bien-être • Élégance</p>
-            <p class="mt-8 font-serif text-xl italic text-bordeaux/80">
-                Prenez soin de vous,<br>nous nous occupons du reste ♡
-            </p>
+        .burgundy {
+            background: #780D25;
+        }
+
+        .text-burgundy {
+            color: #780D25;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-5">
+<div class="bg-white rounded-3xl shadow-xl overflow-hidden
+                flex flex-col md:flex-row max-w-5xl w-full">
+ <!-- Image -->
+        <div class="md:w-1/2 relative min-h-[300px]">
+            <img
+                src="{{asset('images/login.png')}}"
+                class="w-full h-full object-cover"
+                alt="Salon de beauté">
+                <div class="absolute inset-0 bg-black/40 flex items-end p-10">
+                <div class="text-white">
+                    <h1 class="text-3xl font-bold">All in One by Eva</h1>
+                    <p class="mt-2">La beauté, organisée avec élégance.</p>
+                </div>
+            </div>
         </div>
-    </div>
-
-    {{-- Partie droite : formulaire --}}
-    <div class="flex items-center justify-center bg-creme px-4 py-10">
-        <div class="w-full max-w-md">
-
-            {{-- Nom visible sur mobile (la partie gauche est masquée) --}}
-            <div class="mb-6 text-center lg:hidden">
-                <h1 class="font-script text-5xl text-bordeaux">All in One by Eva</h1>
+        <!-- Formulaire de connexion -->
+        <div class="md:w-1/2 p-8 md:p-14 flex flex-col justify-center">
+        <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-burgundy">
+                    Connexion !
+                </h2>
+                <p class="text-gray-500 mt-2">
+                    Connectez-vous à votre espace
+                </p>
             </div>
 
-            <div class="rounded-2xl bg-white p-8 shadow-lg shadow-bordeaux/10">
-                <div class="mb-6 text-center">
-                    <h2 class="text-2xl font-semibold">Connexion</h2>
-                    <p class="mt-1 text-sm text-encre/70">Accédez à votre espace</p>
+            @if ($errors->any())
+                <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
+                    {{ $errors->first() }}
                 </div>
+            @endif
 
-                <form method="POST" action="{{ route('login.attempt') }}" class="space-y-5" id="form-login">
-                    @csrf
+            <form method="POST" action="{{ route('login.attempt') }}">
+                @csrf
 
-                    <div>
-                        <label for="email" class="sr-only">Adresse e-mail</label>
-                        <input id="email" name="email" type="email" value="{{ old('email') }}"
-                               placeholder="Adresse e-mail"
-                               required autofocus autocomplete="username"
-                               class="w-full rounded-lg border border-beige-dark/50 bg-white px-3 py-3 text-sm outline-none focus:border-bordeaux focus:ring-2 focus:ring-bordeaux/20">
-                        @error('email')
-                            <p class="mt-1 text-sm text-red-700">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="password" class="sr-only">Mot de passe</label>
-                        <div class="relative">
-                            <input id="password" name="password" type="password"
-                                   placeholder="Mot de passe"
-                                   required autocomplete="current-password"
-                                   class="w-full rounded-lg border border-beige-dark/50 bg-white px-3 py-3 pr-12 text-sm outline-none focus:border-bordeaux focus:ring-2 focus:ring-bordeaux/20">
-                            <button type="button" id="toggle-password"
-                                    class="absolute inset-y-0 right-0 px-3 text-xs font-medium text-bordeaux">
-                                Voir
-                            </button>
-                        </div>
-                        @error('password')
-                            <p class="mt-1 text-sm text-red-700">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <label class="flex items-center gap-2 text-sm">
-                        <input type="checkbox" name="remember" class="rounded border-beige-dark text-bordeaux focus:ring-bordeaux">
-                        Se souvenir de moi
+                <div class="mb-5">
+                    <label class="block text-gray-700 mb-2">
+                        Adresse e-mail
                     </label>
 
-                    <button type="submit" id="btn-login"
-                            class="w-full rounded-lg bg-bordeaux px-4 py-3 text-sm font-semibold text-white transition hover:bg-bordeaux-dark disabled:opacity-60">
-                        Se connecter →
-                    </button>
-                </form>
-            </div>
+                    <div class="flex items-center border rounded-xl px-4">
+                        <i class="fa-solid fa-envelope text-burgundy"></i>
+                        <input
+                            type="email"
+                            name="email"
+                            value="{{ old('email') }}"
+                            placeholder="Votre adresse e-mail"
+                            class="w-full p-3 outline-none"
+                            required>
+                    </div>
+                </div>
 
-            <p class="mt-6 text-center text-xs text-encre/50">All in One by Eva © {{ date('Y') }}</p>
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">
+                        Mot de passe
+                    </label>
+
+                    <div class="flex items-center border rounded-xl px-4">
+                        <i class="fa-solid fa-lock text-burgundy"></i>
+
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Votre mot de passe"
+                            class="w-full p-3 outline-none"
+                            required>
+
+                        <button type="button" onclick="togglePassword()">
+                            <i id="eye" class="fa-solid fa-eye text-gray-500"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit"class="burgundy text-white w-full py-3 rounded-xl
+                           font-semibold hover:opacity-90 transition">Se connecter</button>
+            </form>
+
+            <p class="text-center text-gray-400 text-sm mt-8">
+                © 2026 All in One by Eva
+            </p>
+
         </div>
     </div>
-</div>
 
-<script>
-    // Afficher / masquer le mot de passe
-    document.getElementById('toggle-password').addEventListener('click', function () {
-        const champ = document.getElementById('password');
-        const visible = champ.type === 'text';
-        champ.type = visible ? 'password' : 'text';
-        this.textContent = visible ? 'Voir' : 'Masquer';
-    });
+    <script>
+        function togglePassword() {
+            const password = document.getElementById('password');
+            const eye = document.getElementById('eye');
 
-    // État de chargement : évite le double clic pendant l'envoi
-    document.getElementById('form-login').addEventListener('submit', function () {
-        const b = document.getElementById('btn-login');
-        b.disabled = true;
-        b.textContent = 'Connexion en cours…';
-    });
-</script>
-@endsection
+            if (password.type === 'password') {
+                password.type = 'text';
+                eye.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                password.type = 'password';
+                eye.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
+
+</body>
+</html>
