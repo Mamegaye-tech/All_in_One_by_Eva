@@ -27,18 +27,20 @@
 <body class="min-h-screen flex items-center justify-center p-5">
 <div class="bg-white rounded-3xl shadow-xl overflow-hidden
                 flex flex-col md:flex-row max-w-5xl w-full">
- <!-- Image -->
-        <div class="md:w-1/2 relative min-h-[300px]">
-            <img
-                src="{{asset('images/login.png')}}"
-                class="w-full h-full object-cover"
-                alt="Salon de beauté">
-                <div class="absolute inset-0 bg-black/40 flex items-end p-10">
-                <div class="text-white">
-                    <h1 class="text-3xl font-bold">All in One by Eva</h1>
-                    <p class="mt-2">La beauté, organisée avec élégance.</p>
-                </div>
-            </div>
+  <!-- Image -->
+        <div class="relative w-full h-screen">
+    <img
+        src="{{ asset('images/image.png') }}"
+        class="absolute inset-0 w-full h-full object-cover"
+        alt="Salon de beauté">
+
+    <div class="absolute inset-0 bg-black/10 flex items-end p-10">
+        <div class="text-white">
+            <!-- votre texte ici -->
+        </div>
+    </div>
+</div>
+        </div>
         </div>
         <!-- Formulaire de connexion -->
         <div class="md:w-1/2 p-8 md:p-14 flex flex-col justify-center">

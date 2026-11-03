@@ -101,12 +101,15 @@
         </nav>
 
         <!-- DECONNEXION -->
-        <div class="border-t border-white/20 pt-5 mt-5">
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-right-from-bracket w-5"></i>
-                <span>Déconnexion</span>
-            </a>
-        </div>
+<div class="border-t border-white/20 pt-5 mt-5">
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20 w-full text-left cursor-pointer">
+            <i class="fas fa-right-from-bracket w-5"></i>
+            <span>Déconnexion</span>
+        </button>
+    </form>
+</div>
 
     </aside>
 
