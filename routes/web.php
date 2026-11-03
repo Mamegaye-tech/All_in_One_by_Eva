@@ -18,3 +18,5 @@ Route::middleware(['auth', 'actif'])->group(function () {
 });
 Route::get('/dashboard', function () {
     return view('layouts.app');})->name('dashboard');
+
+Route::post('/lagout',[AuthController::class,'lagout'])->name('lagout');
