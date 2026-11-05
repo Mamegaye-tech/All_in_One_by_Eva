@@ -15,8 +15,9 @@ class EnsureUserIsActive
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-
-        if ($user && ! $user->actif) {
+        //   var_dump($user?->only(['id', 'email', 'is_active']), session()->getId());
+        //   die();
+        if ($user && ! $user->is_active) {
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
