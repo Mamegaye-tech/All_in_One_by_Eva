@@ -20,14 +20,15 @@ class AuthController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
+        // dd('Connecté', Auth::id(), route('dashboard'));
        // $request->user()->forceFill(['last_login_at' => now()])->save();
-        $request->user()->save();
+        // $request->user()->save();
 
         return redirect()->intended(route('dashboard'));
     }
 
     public function logout(Request $request): RedirectResponse
-    {
+    {   
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
