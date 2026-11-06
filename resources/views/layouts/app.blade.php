@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -12,6 +11,10 @@
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+         
+
+    @stack('styles')
+</head>
 </head>
 
 <body class="bg-[#FFF8FA]">
@@ -23,123 +26,57 @@
 
             <!-- LOGO -->
             <div class="text-center mb-5 border-b border-pink-300/40 pb-3">
-
                 <img src="{{ asset('images/logo1.png') }}"
                      alt="All in One by Eva"
                      class="w-28 mx-auto h-auto">
-
             </div>
 
             <!-- MENU -->
             <nav class="flex-1 space-y-2 text-sm overflow-y-auto pt-1">
 
-                <!-- Tableau de bord -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl bg-[#C52F6C]">
-                    <i class="fas fa-house w-6 text-lg"></i>
-                    <span>Tableau de bord</span>
-                </a>
+                <x-nav-link route="dashboard" icon="fa-house">Tableau de bord</x-nav-link>
 
-                <!-- Clients -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-                    <i class="fas fa-users w-6 text-lg"></i>
-                    <span>Clients</span>
-                </a>
+                <x-nav-link route="clients.index" pattern="clients.*" icon="fa-users">Clients</x-nav-link>
 
-                <!-- Rendez-vous -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-                    <i class="fas fa-calendar-days w-6 text-lg"></i>
-                    <span>Rendez-vous</span>
-                </a>
+                <x-nav-link route="rendez-vous.index" pattern="rendez-vous.*" icon="fa-calendar-days">Rendez-vous</x-nav-link>
 
-                <!-- Prestations -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-                    <i class="fas fa-spa w-6 text-lg"></i>
-                    <span>Prestations</span>
-                </a>
+                <x-nav-link route="#" icon="fa-spa">Prestations</x-nav-link>
 
-                <!-- Caisse -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-                    <i class="fas fa-briefcase w-6 text-lg"></i>
-                    <span>Caisse</span>
-                </a>
+                <x-nav-link route="#" icon="fa-briefcase">Caisse</x-nav-link>
 
-                <!-- Dépenses -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-                    <i class="fas fa-sack-dollar w-6 text-lg"></i>
-                    <span>Dépenses</span>
-                </a>
+                <x-nav-link route="#" icon="fa-sack-dollar">Dépenses</x-nav-link>
 
-                <!-- Produits et stock -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-                    <i class="fas fa-boxes-stacked w-6 text-lg"></i>
-                    <span>Stock</span>
-                </a>
+                <x-nav-link route="#" icon="fa-boxes-stacked">Stock</x-nav-link>
 
-                <!-- Anniversaires -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-                    <i class="fas fa-cake-candles w-6 text-lg"></i>
-                    <span>Anniversaires</span>
-                </a>
+                <x-nav-link route="#" icon="fa-cake-candles">Anniversaires</x-nav-link>
 
-                <!-- Promotions -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-                    <i class="fas fa-gift w-6 text-lg"></i>
-                    <span>Campagnes</span>
-                </a>
+                <x-nav-link route="#" icon="fa-gift">Campagnes</x-nav-link>
 
-                <!-- Rapports -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-                    <i class="fas fa-chart-column w-6 text-lg"></i>
-                    <span>Rapports</span>
-                </a>
+                <x-nav-link route="#" icon="fa-chart-column">Rapports</x-nav-link>
 
-                <!-- Employés -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-                    <i class="fas fa-user-tie w-6 text-lg"></i>
-                    <span>Equipe</span>
-                </a>
+                <x-nav-link route="#" icon="fa-user-tie">Equipe</x-nav-link>
 
-                <!-- Paramètres -->
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-                    <i class="fas fa-gear w-6 text-lg"></i>
-                    <span>Paramètres</span>
-                </a>
+                <x-nav-link route="#" icon="fa-gear">Paramètres</x-nav-link>
 
             </nav>
 
             <!-- DECONNEXION -->
             <div class="border-t border-pink-300/40 pt-3 mt-3">
-
-                <a href="#"
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
-
-                    <i class="fas fa-right-from-bracket w-6 text-lg"></i>
-
-                    <span>Déconnexion</span>
-
-                </a>
-
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"
+                        class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10 text-left">
+                        <i class="fas fa-right-from-bracket w-6 text-lg"></i>
+                        <span>Déconnexion</span>
+                    </button>
+                </form>
             </div>
 
         </aside>
 
         <!-- CONTENU PRINCIPAL -->
         <main class="flex-1 min-w-0 p-6">
-
             @yield('content')
-
         </main>
 
     </div>
@@ -147,4 +84,3 @@
 </body>
 
 </html>
-

@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\RendezVousController;
+
+Route::resource('rendez-vous', RendezVousController::class);
 
 // Route::get('/debug-output', function () {
 //     $envoye = headers_sent($fichier, $ligne);
@@ -33,7 +37,13 @@ Route::middleware(['auth','actif'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 
+  Route::resource('clients', ClientController::class);
+
+  Route::resource('rendez-vous', RendezVousController::class);
+
 });
+
+  
 
 // Route::get('/debug-session', fn () => [
 //     'session_id'  => session()->getId(),
