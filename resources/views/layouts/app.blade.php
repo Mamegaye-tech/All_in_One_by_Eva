@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,109 +13,135 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
-<body class="bg-[#F8F4F0]">
+<body class="bg-[#FFF8FA]">
 
-<div class="flex min-h-screen">
+    <div class="flex min-h-screen">
 
-    <!-- SIDEBAR -->
-    <aside class="w-64 min-h-screen bg-[#780D25] text-white flex flex-col p-5">
+        <!-- SIDEBAR -->
+        <aside class="w-64 h-screen sticky top-0 bg-[#700D29] text-white flex flex-col px-4 py-4">
 
-        <!-- LOGO -->
-        <div class="mb-10 text-center">
-            <h1 class="text-2xl font-bold tracking-wide">
-                All in One
-            </h1>
-            <p class="text-pink-200 text-sm italic">
-                by Eva
-            </p>
-        </div>
+            <!-- LOGO -->
+            <div class="text-center mb-5 border-b border-pink-300/40 pb-3">
 
-        <!-- MENU -->
-        <nav class="flex-1 space-y-2">
+                <img src="{{ asset('images/logo1.png') }}"
+                     alt="All in One by Eva"
+                     class="w-28 mx-auto h-auto">
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-white/20">
-                <i class="fas fa-chart-pie w-5"></i>
-                <span>Tableau de bord</span>
-            </a>
+            </div>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-users w-5"></i>
-                <span>Clients</span>
-            </a>
+            <!-- MENU -->
+            <nav class="flex-1 space-y-2 text-sm overflow-y-auto pt-1">
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-calendar-days w-5"></i>
-                <span>Rendez-vous</span>
-            </a>
+                <!-- Tableau de bord -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl bg-[#C52F6C]">
+                    <i class="fas fa-house w-6 text-lg"></i>
+                    <span>Tableau de bord</span>
+                </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-spa w-5"></i>
-                <span>Prestations</span>
-            </a>
+                <!-- Clients -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
+                    <i class="fas fa-users w-6 text-lg"></i>
+                    <span>Clients</span>
+                </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-user-tie w-5"></i>
-                <span>Employés</span>
-            </a>
+                <!-- Rendez-vous -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
+                    <i class="fas fa-calendar-days w-6 text-lg"></i>
+                    <span>Rendez-vous</span>
+                </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-wallet w-5"></i>
-                <span>Paiements</span>
-            </a>
+                <!-- Prestations -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
+                    <i class="fas fa-spa w-6 text-lg"></i>
+                    <span>Prestations</span>
+                </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-money-bill-wave w-5"></i>
-                <span>Dépenses</span>
-            </a>
+                <!-- Caisse -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
+                    <i class="fas fa-briefcase w-6 text-lg"></i>
+                    <span>Caisse</span>
+                </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-boxes-stacked w-5"></i>
-                <span>Stocks</span>
-            </a>
+                <!-- Dépenses -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
+                    <i class="fas fa-sack-dollar w-6 text-lg"></i>
+                    <span>Dépenses</span>
+                </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-cake-candles w-5"></i>
-                <span>Anniversaires</span>
-            </a>
+                <!-- Produits et stock -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
+                    <i class="fas fa-boxes-stacked w-6 text-lg"></i>
+                    <span>Stock</span>
+                </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-gift w-5"></i>
-                <span>Fidélité</span>
-            </a>
+                <!-- Anniversaires -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
+                    <i class="fas fa-cake-candles w-6 text-lg"></i>
+                    <span>Anniversaires</span>
+                </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fab fa-whatsapp w-5"></i>
-                <span>Campagnes WhatsApp</span>
-            </a>
+                <!-- Promotions -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
+                    <i class="fas fa-gift w-6 text-lg"></i>
+                    <span>Campagnes</span>
+                </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-chart-line w-5"></i>
-                <span>Rapports</span>
-            </a>
+                <!-- Rapports -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
+                    <i class="fas fa-chart-column w-6 text-lg"></i>
+                    <span>Rapports</span>
+                </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-gear w-5"></i>
-                <span>Paramètres</span>
-            </a>
+                <!-- Employés -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
+                    <i class="fas fa-user-tie w-6 text-lg"></i>
+                    <span>Equipe</span>
+                </a>
 
-        </nav>
+                <!-- Paramètres -->
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
+                    <i class="fas fa-gear w-6 text-lg"></i>
+                    <span>Paramètres</span>
+                </a>
 
-        <!-- DECONNEXION -->
-        <div class="border-t border-white/20 pt-5 mt-5">
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-right-from-bracket w-5"></i>
-                <span>Déconnexion</span>
-            </a>
-        </div>
+            </nav>
 
-    </aside>
+            <!-- DECONNEXION -->
+            <div class="border-t border-pink-300/40 pt-3 mt-3">
 
-    <!-- CONTENU PRINCIPAL -->
-    <main class="flex-1 p-8">
-        @yield('content')
-    </main>
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10">
 
-</div>
+                    <i class="fas fa-right-from-bracket w-6 text-lg"></i>
+
+                    <span>Déconnexion</span>
+
+                </a>
+
+            </div>
+
+        </aside>
+
+        <!-- CONTENU PRINCIPAL -->
+        <main class="flex-1 min-w-0 p-6">
+
+            @yield('content')
+
+        </main>
+
+    </div>
 
 </body>
 </html>
