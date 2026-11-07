@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -6,15 +7,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\RendezVousController;
 
-Route::resource('rendez-vous', RendezVousController::class);
+// Page d'accueil
+Route::redirect('/', '/dashboard');
 
-// Route::get('/debug-output', function () {
-//     $envoye = headers_sent($fichier, $ligne);
-
-//     return "headers_sent : " . ($envoye ? 'OUI' : 'non') . "<br>Fichier : {$fichier}<br>Ligne : {$ligne}";
-// });
-
-
+// AUTHENTIFICATION
 Route::middleware('guest')->group(function () {
 
     Route::get('/login', [AuthController::class, 'showLogin'])
@@ -22,36 +18,40 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/login', [AuthController::class, 'login'])
         ->name('login.attempt');
+
 });
 
- Route::get('/sidebar', function () {
-    return view('layouts.app');
-    });
-
 // ESPACE ADMINISTRATION
-Route::middleware(['auth','actif'])->group(function () {
+Route::middleware(['auth', 'actif'])->group(function () {
 
+    // Tableau de bord
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
+    // Déconnexion
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 
-  Route::resource('clients', ClientController::class);
+    // CLIENTS
 
-  Route::resource('rendez-vous', RendezVousController::class);
+    // Export CSV (avant les routes resource)
+    Route::get('clients/export', [ClientController::class, 'export'])
+        ->name('clients.export');
+
+    // Activation / désactivation
+    Route::patch('clients/{client}/statut', [ClientController::class, 'toggleStatus'])
+        ->name('clients.toggle-status');
+
+    // Gestion complète des clients
+    Route::resource('clients', ClientController::class);
+
+    // RENDEZ-VOUS
+    Route::resource('rendez-vous', RendezVousController::class);
 
 });
 
-  
-
-// Route::get('/debug-session', fn () => [
-//     'session_id'  => session()->getId(),
-//     'connecte'    => auth()->check(),
-//     'user_id'     => auth()->id(),
-//     'cle_login'   => collect(session()->all())->keys()->filter(fn ($k) => str_starts_with($k, 'login_'))->values(),
-//     'driver'      => config('session.driver'),
-//     'secure'      => config('session.secure'),
-//     'domain'      => config('session.domain'),
-//     'modele_auth' => config('auth.providers.users.model'),
-// ]);
+// Route de débogage temporaire désactivée
+// Route::get('/debug-output', function () {
+//     $envoye = headers_sent($fichier, $ligne);
+//     return "headers_sent : " . ($envoye ? 'OUI' : 'non');
+// });
