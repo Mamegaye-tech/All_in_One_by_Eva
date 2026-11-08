@@ -1,123 +1,115 @@
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>All in One by Eva</title>
+    <title>@yield('title', 'All in One by Eva')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    @stack('styles')
 </head>
 
-<body class="bg-[#F8F4F0]">
+<body class="bg-[#FFF8FA]">
 
-<div class="flex min-h-screen">
+    <div class="flex min-h-screen">
 
-    <!-- SIDEBAR -->
-    <aside class="w-64 min-h-screen bg-[#780D25] text-white flex flex-col p-5">
+        <!-- SIDEBAR -->
+        <aside class="w-64 h-screen sticky top-0 bg-[#700D29] text-white flex flex-col px-4 py-4">
 
-        <!-- LOGO -->
-        <div class="mb-10 text-center">
-            <h1 class="text-2xl font-bold tracking-wide">
-                All in One
-            </h1>
-            <p class="text-pink-200 text-sm italic">
-                by Eva
-            </p>
-        </div>
+            <!-- LOGO -->
+            <div class="text-center mb-5 border-b border-pink-300/40 pb-3">
+                <img src="{{ asset('images/logo1.png') }}"
+                     alt="All in One by Eva"
+                     class="w-28 mx-auto h-auto">
+            </div>
 
-        <!-- MENU -->
-        <nav class="flex-1 space-y-2">
+            <!-- MENU -->
+            <nav class="flex-1 space-y-2 text-sm overflow-y-auto pt-1">
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-white/20">
-                <i class="fas fa-chart-pie w-5"></i>
-                <span>Tableau de bord</span>
-            </a>
+                <x-nav-link route="dashboard" icon="fa-house">
+                    Tableau de bord
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-users w-5"></i>
-                <span>Clients</span>
-            </a>
+                <x-nav-link route="clients.index" pattern="clients.*" icon="fa-users">
+                    Clients
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-calendar-days w-5"></i>
-                <span>Rendez-vous</span>
-            </a>
+                <x-nav-link route="rendez-vous.index" pattern="rendez-vous.*" icon="fa-calendar-days">
+                    Rendez-vous
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-spa w-5"></i>
-                <span>Prestations</span>
-            </a>
+                <x-nav-link route="#" icon="fa-spa">
+                    Prestations
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-user-tie w-5"></i>
-                <span>Employés</span>
-            </a>
+                <x-nav-link route="#" icon="fa-briefcase">
+                    Caisse
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-wallet w-5"></i>
-                <span>Paiements</span>
-            </a>
+                <x-nav-link route="#" icon="fa-sack-dollar">
+                    Dépenses
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-money-bill-wave w-5"></i>
-                <span>Dépenses</span>
-            </a>
+                <x-nav-link route="#" icon="fa-boxes-stacked">
+                    Stock
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-boxes-stacked w-5"></i>
-                <span>Stocks</span>
-            </a>
+                <x-nav-link route="#" icon="fa-cake-candles">
+                    Anniversaires
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-cake-candles w-5"></i>
-                <span>Anniversaires</span>
-            </a>
+                <x-nav-link route="#" icon="fa-gift">
+                    Campagnes
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-gift w-5"></i>
-                <span>Fidélité</span>
-            </a>
+                <x-nav-link route="#" icon="fa-chart-column">
+                    Rapports
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fab fa-whatsapp w-5"></i>
-                <span>Campagnes WhatsApp</span>
-            </a>
+                <x-nav-link route="#" icon="fa-user-tie">
+                    Equipe
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-chart-line w-5"></i>
-                <span>Rapports</span>
-            </a>
+                <x-nav-link route="#" icon="fa-gear">
+                    Paramètres
+                </x-nav-link>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-gear w-5"></i>
-                <span>Paramètres</span>
-            </a>
+            </nav>
 
-        </nav>
+            <!-- DECONNEXION -->
+            <div class="border-t border-pink-300/40 pt-3 mt-3">
 
-        <!-- DECONNEXION -->
-        <div class="border-t border-white/20 pt-5 mt-5">
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-right-from-bracket w-5"></i>
-                <span>Déconnexion</span>
-            </a>
-        </div>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
 
-    </aside>
+                    <button type="submit"
+                        class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10 text-left">
 
-    <!-- CONTENU PRINCIPAL -->
-    <main class="flex-1 p-8">
-        @yield('content')
-    </main>
+                        <i class="fas fa-right-from-bracket w-6 text-lg"></i>
 
-</div>
+                        <span>Déconnexion</span>
+
+                    </button>
+                </form>
+
+            </div>
+
+        </aside>
+
+        <!-- CONTENU PRINCIPAL -->
+        <main class="flex-1 min-w-0 p-6">
+            @yield('content')
+        </main>
+
+    </div>
 
 </body>
 
 </html>
-

@@ -1,3 +1,4 @@
+
 <?php
 
 namespace App\Http\Middleware;
@@ -16,13 +17,16 @@ class EnsureUserIsActive
     {
         $user = $request->user();
 
-        if ($user && ! $user->actif) {
+        if ($user && ! $user->is_active) {
             Auth::logout();
+
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
             return redirect()->route('login')
-                ->withErrors(['email' => 'Ce compte est désactivé. Contactez l’administratrice.']);
+                ->withErrors([
+                    'email' => 'Ce compte est désactivé. Contactez l’administratrice.'
+                ]);
         }
 
         return $next($request);
