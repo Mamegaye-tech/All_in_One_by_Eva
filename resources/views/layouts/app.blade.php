@@ -1,237 +1,160 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>All in One by Eva</title>
+    <title>@yield('title', 'All in One by Eva')</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    <style>
-       * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background: #f8f1f5;
-    color: #321b25;
-}
-
-        .app-container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* SIDEBAR (identique au tableau de bord) */
-
-        .sidebar {
-            width: 230px;
-            background: #780d25;
-            color: white;
-            padding: 20px 12px;
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-        }
-
-        .sidebar .logo {
-            text-align: center;
-            padding: 8px 0 30px;
-        }
-
-        .sidebar .logo i {
-            font-size: 35px;
-            margin-bottom: 8px;
-        }
-
-        .sidebar .logo h2 {
-            font-family: Georgia, serif;
-            font-style: italic;
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .sidebar .logo p {
-            font-family: Georgia, serif;
-            font-style: italic;
-            font-size: 14px;
-        }
-
-        .sidebar .menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 10px;
-            margin-bottom: 4px;
-            color: white;
-            text-decoration: none;
-            font-size: 13px;
-            border-radius: 9px;
-            transition: .3s;
-        }
-
-        .sidebar .menu a:hover,
-        .sidebar .menu a.active {
-            background: #b94e72;
-        }
-
-        .sidebar .menu a i {
-            width: 17px;
-            font-size: 15px;
-            text-align: center;
-        }
-
-        .sidebar .logout {
-            margin-top: auto;
-            border-top: 1px solid #a94c66;
-            padding-top: 15px;
-        }
-
-        .sidebar .logout button {
-            width: 100%;
-            border: none;
-            background: transparent;
-            color: white;
-            text-align: left;
-            padding: 12px 10px;
-            cursor: pointer;
-            font-size: 13px;
-            font-family: inherit;
-        }
-
-        .main-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        @media (max-width: 750px) {
-            .sidebar {
-                width: 65px;
-                padding: 15px 5px;
-            }
-
-            .sidebar .logo h2,
-            .sidebar .logo p,
-            .sidebar .menu a span,
-            .sidebar .logout span {
-                display: none;
-            }
-
-            .sidebar .logo i {
-                font-size: 25px;
-            }
-
-            .sidebar .menu a {
-                justify-content: center;
-            }
-        }
-    </style>
+    @stack('styles')
 </head>
 
-<body>
+<body class="bg-[#FFF8FA] text-[#321b25]">
 
-<div class="app-container">
+    <div class="flex min-h-screen">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+        <!-- SIDEBAR -->
+        <aside id="sidebar"
+               class="w-64 h-screen sticky top-0 bg-[#700D29] text-white flex flex-col px-4 py-4
+                      max-lg:fixed max-lg:inset-y-0 max-lg:left-0 max-lg:z-40 max-lg:shadow-2xl">
 
-        <div class="logo">
-            <i class="fa-solid fa-spa"></i>
-            <h2>All in One</h2>
-            <p>by Eva</p>
-        </div>
+            <!-- LOGO -->
+            <div class="text-center mb-5 border-b border-pink-300/40 pb-3">
+                <img src="{{ asset('images/logo1.png') }}"
+                     alt="All in One by Eva"
+                     class="w-28 mx-auto h-auto">
+            </div>
 
-        <nav class="menu">
+            <!-- MENU -->
+            <nav class="flex-1 space-y-2 text-sm overflow-y-auto pt-1">
 
-            <a href="{{ route('dashboard') }}"
-               class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <i class="fa-solid fa-house"></i>
-                <span>Tableau de bord</span>
-            </a>
+                <x-nav-link route="dashboard" icon="fa-house">
+                    Tableau de bord
+                </x-nav-link>
 
-            <a href="#">
-                <i class="fa-solid fa-users"></i>
-                <span>Clients</span>
-            </a>
+                <x-nav-link route="clients.index" pattern="clients.*" icon="fa-users">
+                    Clients
+                </x-nav-link>
 
-            <a href="#">
-                <i class="fa-regular fa-calendar-days"></i>
-                <span>Rendez-vous</span>
-            </a>
+                <x-nav-link route="rendez-vous.index" pattern="rendez-vous.*" icon="fa-calendar-days">
+                    Rendez-vous
+                </x-nav-link>
 
-            <a href="{{ route('prestations.index') }}"
-               class="{{ request()->routeIs('prestations.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-hand-sparkles"></i>
-                <span>Prestations</span>
-            </a>
+                <x-nav-link route="prestations.index" pattern="prestations.*" icon="fa-spa">
+                    Prestations
+                </x-nav-link>
 
-            <a href="#">
-                <i class="fa-solid fa-money-bill-wave"></i>
-                <span>Paiements</span>
-            </a>
+                <x-nav-link route="#" icon="fa-briefcase">
+                    Caisse
+                </x-nav-link>
 
-            <a href="#">
-                <i class="fa-solid fa-wallet"></i>
-                <span>Dépenses</span>
-            </a>
+                <x-nav-link route="#" icon="fa-sack-dollar">
+                    Dépenses
+                </x-nav-link>
 
-            <a href="#">
-                <i class="fa-solid fa-box"></i>
-                <span>Produits & Stock</span>
-            </a>
+                <x-nav-link route="#" icon="fa-boxes-stacked">
+                    Stock
+                </x-nav-link>
 
-            <a href="#">
-                <i class="fa-solid fa-user-tie"></i>
-                <span>Employés</span>
-            </a>
+                <x-nav-link route="#" icon="fa-cake-candles">
+                    Anniversaires
+                </x-nav-link>
 
-            <a href="#">
-                <i class="fa-brands fa-whatsapp"></i>
-                <span>Messages WhatsApp</span>
-            </a>
+                <x-nav-link route="#" icon="fa-gift">
+                    Campagnes
+                </x-nav-link>
 
-            <a href="#">
-                <i class="fa-solid fa-bullhorn"></i>
-                <span>Promotions</span>
-            </a>
+                <x-nav-link route="#" icon="fa-chart-column">
+                    Rapports
+                </x-nav-link>
 
-            <a href="#">
-                <i class="fa-solid fa-chart-column"></i>
-                <span>Rapports</span>
-            </a>
+                <x-nav-link route="#" icon="fa-user-tie">
+                    Equipe
+                </x-nav-link>
 
-            <a href="#">
-                <i class="fa-solid fa-gear"></i>
-                <span>Paramètres</span>
-            </a>
+                <x-nav-link route="#" icon="fa-gear">
+                    Paramètres
+                </x-nav-link>
 
-        </nav>
+            </nav>
 
-        <div class="logout">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Déconnexion</span>
+            <!-- DECONNEXION -->
+            <div class="border-t border-pink-300/40 pt-3 mt-3">
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+
+                    <button type="submit"
+                        class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/10 text-left">
+
+                        <i class="fas fa-right-from-bracket w-6 text-lg"></i>
+
+                        <span>Déconnexion</span>
+
+                    </button>
+                </form>
+
+            </div>
+
+        </aside>
+
+        <!-- CONTENU PRINCIPAL -->
+        <div class="flex-1 min-w-0 flex flex-col">
+
+            <!-- BARRE DU HAUT -->
+            <header class="sticky top-0 z-30 flex items-center gap-4 border-b border-[#f0dfe7] bg-white/90 px-6 py-3 backdrop-blur">
+
+                <button type="button" id="burger" aria-label="Menu"
+                        class="flex h-10 w-10 items-center justify-center rounded-xl text-lg transition hover:bg-[#f5edf1]">
+                    <i class="fa-solid fa-bars"></i>
                 </button>
-            </form>
+
+                <form method="GET" action="{{ route('clients.index') }}" class="relative max-w-md flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[#806d76]"></i>
+                    <input type="search" name="search" value="{{ request('search') }}" placeholder="Rechercher un client..."
+                           class="w-full rounded-full bg-[#f5edf1] py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#a51c50]/40">
+                </form>
+
+                <div class="ml-auto flex items-center gap-4">
+                    <button type="button" aria-label="Notifications"
+                            class="relative flex h-10 w-10 items-center justify-center rounded-xl text-lg text-[#780d25] transition hover:bg-[#f5edf1]">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-[#a51c50]"></span>
+                    </button>
+
+                    <div class="flex items-center gap-3">
+                        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[#e8b5c6] font-bold text-[#780d25]">
+                            {{ strtoupper(mb_substr(auth()->user()->name ?? 'A', 0, 1)) }}
+                        </span>
+                        <span class="hidden text-sm font-semibold sm:block">
+                            {{ auth()->user()->name ?? 'Administratrice' }}
+                            <i class="fa-solid fa-chevron-down ml-1 text-xs text-[#806d76]"></i>
+                        </span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 min-w-0 p-6">
+                @yield('content')
+                @yield('contenu')
+            </main>
         </div>
 
-    </aside>
+    </div>
 
-    <!-- CONTENU PRINCIPAL -->
-    <main class="main-content">
-        @yield('contenu')
-    </main>
-
-</div>
+    <script>
+        // Burger : affiche ou masque la sidebar (masquée par défaut sur petit écran)
+        const sidebar = document.getElementById('sidebar');
+        if (window.innerWidth < 1024) sidebar.classList.add('hidden');
+        document.getElementById('burger').addEventListener('click', () => sidebar.classList.toggle('hidden'));
+    </script>
 
 </body>
+
 </html>

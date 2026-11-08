@@ -10,20 +10,22 @@ use Symfony\Component\HttpFoundation\Response;
 class EnsureUserIsActive
 {
     /**
-     * Déconnecte immédiatement un compte désactivé pendant sa session.
+     * DÃ©connecte immÃ©diatement un compte dÃ©sactivÃ© pendant sa session.
      */
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-        //   var_dump($user?->only(['id', 'email', 'is_active']), session()->getId());
-        //   die();
+
         if ($user && ! $user->is_active) {
             Auth::logout();
+
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
             return redirect()->route('login')
-                ->withErrors(['email' => 'Ce compte est désactivé. Contactez l’administratrice.']);
+                ->withErrors([
+                    'email' => 'Ce compte est dÃ©sactivÃ©. Contactez lâ€™administratrice.'
+                ]);
         }
 
         return $next($request);

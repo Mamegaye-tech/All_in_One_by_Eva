@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Services\WhatsAppService;
+
 
 class Client extends Model
 {
@@ -75,6 +77,55 @@ class Client extends Model
         return $this->whatsapp ?: $this->telephone;
     }
 
+        protected function telephoneAffiche(): Attribute
+    {
+        return Attribute::get(fn () => self::formaterNumero($this->telephone));
+    }
+
+    protected function whatsappAffiche(): Attribute
+    {
+        return Attribute::get(fn () => self::formaterNumero($this->numeroWhatsApp()));
+    }
+
+    public static function formaterNumero(?string $numero): string
+    {
+        if (! $numero) {
+            return '';
+        }
+
+        if (str_starts_with($numero, '221') && strlen($numero) === 12) {
+            $n = substr($numero, 3);
+
+            return '+221 '.substr($n, 0, 2).' '.substr($n, 2, 3).' '.substr($n, 5, 2).' '.substr($n, 7, 2);
+        }
+
+        return '+'.$numero;
+    }
+
+    /** Lien wa.me (null si le numéro est invalide). L'utilisateur envoie le message lui-même. */
+    public function lienWhatsApp(?string $message = null): ?string
+    {
+        $service = app(WhatsAppService::class);
+
+        if (! $service->numeroValide($this->numeroWhatsApp())) {
+            return null;
+        }
+
+        return $service->lien($this->numeroWhatsApp(), $message ?? '');
+    }
+
+    public function scopeFiltrer(Builder $query, array $filtres): void
+    {
+        $query->recherche($filtres['q'] ?? null)
+            ->when(
+                $filtres['statut'] ?? null,
+                fn ($q, $statut) => $q->where('statut', $statut),
+                fn ($q) => $q->nonArchives()
+            )
+            ->when(($filtres['consentement'] ?? null) === 'oui', fn ($q) => $q->where('consentement_promo', true))
+            ->when(($filtres['consentement'] ?? null) === 'non', fn ($q) => $q->where('consentement_promo', false));
+    }
+    
     public function scopeRecherche(Builder $query, ?string $terme): void
     {
         $terme = trim((string) $terme);
