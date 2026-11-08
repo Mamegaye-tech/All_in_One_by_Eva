@@ -35,7 +35,7 @@ Route::post('/prestations', [PrestationController::class, 'store'])->name('prest
 
     // GESTION DES PRESTATIONS
     Route::resource('prestations', PrestationController::class)
-        ->only(['index', 'create', 'store']);
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
 });
 

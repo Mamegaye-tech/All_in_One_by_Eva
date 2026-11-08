@@ -440,14 +440,28 @@ body > div > aside nav a {
                 @endif
             </td>
 
-            <td>
-                <button class="action-btn">
-                    <i class="fas fa-pen"></i>
-                </button>
+                        <td>
+                <div style="display:flex; align-items:center; gap:5px;">
 
-                <button class="action-btn">
-                    <i class="fas fa-trash"></i>
-                </button>
+                    <a href="{{ route('prestations.edit', $prestation->id) }}"
+                       class="action-btn"
+                       style="text-decoration:none; display:inline-flex;"
+                       title="Modifier">
+                        <i class="fas fa-pen"></i>
+                    </a>
+
+                    <form action="{{ route('prestations.destroy', $prestation->id) }}"
+                          method="POST"
+                          style="margin:0;"
+                          onsubmit="return confirm('Voulez-vous vraiment supprimer cette prestation ?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="action-btn" style="margin-right:0;" title="Supprimer">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+
+                </div>
             </td>
         </tr>
 
