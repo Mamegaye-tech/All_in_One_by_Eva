@@ -512,10 +512,10 @@
                 <span>Rendez-vous</span>
             </a>
 
-            <a href="#">
-                <i class="fa-solid fa-hand-sparkles"></i>
-                <span>Prestations</span>
-            </a>
+          <a href="{{ route('prestations.index') }}">
+    <i class="fa-solid fa-hand-sparkles"></i>
+    <span>Prestations</span>
+</a>
 
             <a href="#">
                 <i class="fa-solid fa-money-bill-wave"></i>

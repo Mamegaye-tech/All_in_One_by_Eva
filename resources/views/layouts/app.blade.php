@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -11,116 +10,228 @@
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+       * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f8f1f5;
+    color: #321b25;
+}
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR (identique au tableau de bord) */
+
+        .sidebar {
+            width: 230px;
+            background: #780d25;
+            color: white;
+            padding: 20px 12px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar .logo {
+            text-align: center;
+            padding: 8px 0 30px;
+        }
+
+        .sidebar .logo i {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar .logo h2 {
+            font-family: Georgia, serif;
+            font-style: italic;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .sidebar .logo p {
+            font-family: Georgia, serif;
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        .sidebar .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 10px;
+            margin-bottom: 4px;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            border-radius: 9px;
+            transition: .3s;
+        }
+
+        .sidebar .menu a:hover,
+        .sidebar .menu a.active {
+            background: #b94e72;
+        }
+
+        .sidebar .menu a i {
+            width: 17px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        .sidebar .logout {
+            margin-top: auto;
+            border-top: 1px solid #a94c66;
+            padding-top: 15px;
+        }
+
+        .sidebar .logout button {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: white;
+            text-align: left;
+            padding: 12px 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        @media (max-width: 750px) {
+            .sidebar {
+                width: 65px;
+                padding: 15px 5px;
+            }
+
+            .sidebar .logo h2,
+            .sidebar .logo p,
+            .sidebar .menu a span,
+            .sidebar .logout span {
+                display: none;
+            }
+
+            .sidebar .logo i {
+                font-size: 25px;
+            }
+
+            .sidebar .menu a {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-[#F8F4F0]">
+<body>
 
-<div class="flex min-h-screen">
+<div class="app-container">
 
     <!-- SIDEBAR -->
-    <aside class="w-64 min-h-screen bg-[#780D25] text-white flex flex-col p-5">
+    <aside class="sidebar">
 
-        <!-- LOGO -->
-        <div class="mb-10 text-center">
-            <h1 class="text-2xl font-bold tracking-wide">
-                All in One
-            </h1>
-            <p class="text-pink-200 text-sm italic">
-                by Eva
-            </p>
+        <div class="logo">
+            <i class="fa-solid fa-spa"></i>
+            <h2>All in One</h2>
+            <p>by Eva</p>
         </div>
 
-        <!-- MENU -->
-        <nav class="flex-1 space-y-2">
+        <nav class="menu">
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-white/20">
-                <i class="fas fa-chart-pie w-5"></i>
+            <a href="{{ route('dashboard') }}"
+               class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <i class="fa-solid fa-house"></i>
                 <span>Tableau de bord</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-users w-5"></i>
+            <a href="#">
+                <i class="fa-solid fa-users"></i>
                 <span>Clients</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-calendar-days w-5"></i>
+            <a href="#">
+                <i class="fa-regular fa-calendar-days"></i>
                 <span>Rendez-vous</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-spa w-5"></i>
+            <a href="{{ route('prestations.index') }}"
+               class="{{ request()->routeIs('prestations.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-hand-sparkles"></i>
                 <span>Prestations</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-user-tie w-5"></i>
-                <span>Employés</span>
-            </a>
-
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-wallet w-5"></i>
+            <a href="#">
+                <i class="fa-solid fa-money-bill-wave"></i>
                 <span>Paiements</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-money-bill-wave w-5"></i>
+            <a href="#">
+                <i class="fa-solid fa-wallet"></i>
                 <span>Dépenses</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-boxes-stacked w-5"></i>
-                <span>Stocks</span>
+            <a href="#">
+                <i class="fa-solid fa-box"></i>
+                <span>Produits & Stock</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-cake-candles w-5"></i>
-                <span>Anniversaires</span>
+            <a href="#">
+                <i class="fa-solid fa-user-tie"></i>
+                <span>Employés</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-gift w-5"></i>
-                <span>Fidélité</span>
+            <a href="#">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>Messages WhatsApp</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fab fa-whatsapp w-5"></i>
-                <span>Campagnes WhatsApp</span>
+            <a href="#">
+                <i class="fa-solid fa-bullhorn"></i>
+                <span>Promotions</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-chart-line w-5"></i>
+            <a href="#">
+                <i class="fa-solid fa-chart-column"></i>
                 <span>Rapports</span>
             </a>
 
-            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20">
-                <i class="fas fa-gear w-5"></i>
+            <a href="#">
+                <i class="fa-solid fa-gear"></i>
                 <span>Paramètres</span>
             </a>
 
         </nav>
 
-        <!-- DECONNEXION -->
-<div class="border-t border-white/20 pt-5 mt-5">
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        <button type="submit" class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/20 w-full text-left cursor-pointer">
-            <i class="fas fa-right-from-bracket w-5"></i>
-            <span>Déconnexion</span>
-        </button>
-    </form>
-</div>
+        <div class="logout">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Déconnexion</span>
+                </button>
+            </form>
+        </div>
 
     </aside>
 
     <!-- CONTENU PRINCIPAL -->
-    <main class="flex-1 p-8">
-        @yield('content')
+    <main class="main-content">
+        @yield('contenu')
     </main>
 
 </div>
 
 </body>
-
 </html>
-

@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\PrestationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -21,13 +21,21 @@ Route::middleware('guest')->group(function () {
 });
 
 // ESPACE ADMINISTRATION
-Route::middleware(['auth','actif'])->group(function () {
+Route::middleware(['auth', 'actif'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
+Route::get('/prestations', [PrestationController::class, 'index'])->name('prestations.index');
+Route::get('/prestations/create', [PrestationController::class, 'create'])->name('prestations.create');
+Route::post('/prestations', [PrestationController::class, 'store'])->name('prestations.store');
+
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
+
+    // GESTION DES PRESTATIONS
+    Route::resource('prestations', PrestationController::class)
+        ->only(['index', 'create', 'store']);
 
 });
 
