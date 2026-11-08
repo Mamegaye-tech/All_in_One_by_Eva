@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -6,9 +5,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\RendezVousController;
+use App\Http\Controllers\AccueilController;
 
 // Page d'accueil
 Route::redirect('/', '/dashboard');
+
 
 // AUTHENTIFICATION
 Route::middleware('guest')->group(function () {
@@ -28,7 +29,7 @@ Route::middleware(['auth', 'actif'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    // Déconnexion
+    // DÃ©connexion
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 
@@ -38,19 +39,27 @@ Route::middleware(['auth', 'actif'])->group(function () {
     Route::get('clients/export', [ClientController::class, 'export'])
         ->name('clients.export');
 
-    // Activation / désactivation
+    // Activation / dÃ©sactivation
     Route::patch('clients/{client}/statut', [ClientController::class, 'toggleStatus'])
         ->name('clients.toggle-status');
 
-    // Gestion complète des clients
+    // Gestion complÃ¨te des clients
     Route::resource('clients', ClientController::class);
 
     // RENDEZ-VOUS
     Route::resource('rendez-vous', RendezVousController::class);
+    Route::get('/accueil', [AccueilController::class, 'admin'])->name('accueil.admin');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    Route::resource('clients', ClientController::class);
+
+    Route::resource('rendez-vous', RendezVousController::class)->only(['index', 'store']);
+    Route::patch('/rendez-vous/{rendezVous}/statut', [RendezVousController::class, 'changerStatut'])
+        ->name('rendez-vous.statut');
 });
 
-// Route de débogage temporaire désactivée
+// Route de dÃ©bogage temporaire dÃ©sactivÃ©e
 // Route::get('/debug-output', function () {
 //     $envoye = headers_sent($fichier, $ligne);
 //     return "headers_sent : " . ($envoye ? 'OUI' : 'non');

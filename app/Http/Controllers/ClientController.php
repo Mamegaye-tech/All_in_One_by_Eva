@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Http\Controllers;
@@ -26,7 +25,7 @@ class ClientController extends Controller
             'consentement' => ['nullable', 'in:oui,non'],
         ]);
 
-        // Compatibilité avec les deux versions de recherche
+        // CompatibilitÃ© avec les deux versions de recherche
         if (!empty($filtres['search']) && empty($filtres['q'])) {
             $filtres['q'] = $filtres['search'];
         }
@@ -60,10 +59,10 @@ class ClientController extends Controller
         $client = $this->service->create($request->validated());
 
         return redirect()->route('clients.show', $client)
-            ->with('success', 'Client enregistré avec succès.');
+            ->with('success', 'Client enregistrÃ© avec succÃ¨s.');
     }
 
-    // Afficher les détails d'un client
+    // Afficher les dÃ©tails d'un client
     public function show(Client $client)
     {
         Gate::authorize('view', $client);
@@ -87,7 +86,7 @@ class ClientController extends Controller
         $this->service->update($client, $request->validated());
 
         return redirect()->route('clients.show', $client)
-            ->with('success', 'Fiche client mise à jour.');
+            ->with('success', 'Fiche client mise Ã  jour.');
     }
 
     // Archiver un client
@@ -100,10 +99,10 @@ class ClientController extends Controller
         ]);
 
         return redirect()->route('clients.index')
-            ->with('success', 'Client archivé avec succès.');
+            ->with('success', 'Client archivÃ© avec succÃ¨s.');
     }
 
-    // Activer ou désactiver un client
+    // Activer ou dÃ©sactiver un client
     public function toggleStatus(Client $client)
     {
         Gate::authorize('toggleStatus', $client);
@@ -113,8 +112,8 @@ class ClientController extends Controller
         return back()->with(
             'success',
             $client->statut === StatutClient::Actif
-                ? 'Client réactivé.'
-                : 'Client désactivé.'
+                ? 'Client rÃ©activÃ©.'
+                : 'Client dÃ©sactivÃ©.'
         );
     }
 
@@ -135,9 +134,9 @@ class ClientController extends Controller
             fwrite($out, "\xEF\xBB\xBF");
 
             fputcsv($out, [
-                'Prénom',
+                'PrÃ©nom',
                 'Nom',
-                'Téléphone',
+                'TÃ©lÃ©phone',
                 'WhatsApp',
                 'E-mail',
                 'Date de naissance',
@@ -170,7 +169,7 @@ class ClientController extends Controller
         ]);
     }
 
-    /** Évite l'injection de formules dans Excel. */
+    /** Ã‰vite l'injection de formules dans Excel. */
     private function csvSafe(?string $value): string
     {
         $value = (string) $value;
