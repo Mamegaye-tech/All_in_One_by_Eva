@@ -11,18 +11,18 @@
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-         
 
     @stack('styles')
 </head>
-</head>
 
-<body class="bg-[#FFF8FA]">
+<body class="bg-[#FFF8FA] text-[#321b25]">
 
     <div class="flex min-h-screen">
 
         <!-- SIDEBAR -->
-        <aside class="w-64 h-screen sticky top-0 bg-[#700D29] text-white flex flex-col px-4 py-4">
+        <aside id="sidebar"
+               class="w-64 h-screen sticky top-0 bg-[#700D29] text-white flex flex-col px-4 py-4
+                      max-lg:fixed max-lg:inset-y-0 max-lg:left-0 max-lg:z-40 max-lg:shadow-2xl">
 
             <!-- LOGO -->
             <div class="text-center mb-5 border-b border-pink-300/40 pb-3">
@@ -75,11 +75,54 @@
         </aside>
 
         <!-- CONTENU PRINCIPAL -->
-        <main class="flex-1 min-w-0 p-6">
-            @yield('content')
-        </main>
+        <div class="flex-1 min-w-0 flex flex-col">
+
+            <!-- BARRE DU HAUT -->
+            <header class="sticky top-0 z-30 flex items-center gap-4 border-b border-[#f0dfe7] bg-white/90 px-6 py-3 backdrop-blur">
+
+                <button type="button" id="burger" aria-label="Menu"
+                        class="flex h-10 w-10 items-center justify-center rounded-xl text-lg transition hover:bg-[#f5edf1]">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <form method="GET" action="{{ route('clients.index') }}" class="relative max-w-md flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[#806d76]"></i>
+                    <input type="search" name="search" value="{{ request('search') }}" placeholder="Rechercher un client..."
+                           class="w-full rounded-full bg-[#f5edf1] py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#a51c50]/40">
+                </form>
+
+                <div class="ml-auto flex items-center gap-4">
+                    <button type="button" aria-label="Notifications"
+                            class="relative flex h-10 w-10 items-center justify-center rounded-xl text-lg text-[#780d25] transition hover:bg-[#f5edf1]">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-[#a51c50]"></span>
+                    </button>
+
+                    <div class="flex items-center gap-3">
+                        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[#e8b5c6] font-bold text-[#780d25]">
+                            {{ strtoupper(mb_substr(auth()->user()->name ?? 'A', 0, 1)) }}
+                        </span>
+                        <span class="hidden text-sm font-semibold sm:block">
+                            {{ auth()->user()->name ?? 'Administratrice' }}
+                            <i class="fa-solid fa-chevron-down ml-1 text-xs text-[#806d76]"></i>
+                        </span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 min-w-0 p-6">
+                @yield('content')
+            </main>
+        </div>
 
     </div>
+
+    <script>
+        // Burger : affiche ou masque la sidebar (masquée par défaut sur petit écran)
+        const sidebar = document.getElementById('sidebar');
+        if (window.innerWidth < 1024) sidebar.classList.add('hidden');
+        document.getElementById('burger').addEventListener('click', () => sidebar.classList.toggle('hidden'));
+    </script>
 
 </body>
 

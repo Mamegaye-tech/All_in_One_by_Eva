@@ -1,83 +1,127 @@
 @extends('layouts.app')
 
 @section('content')
-<div>
+@php
+    $teintes = ['bg-[#e8b5c6]', 'bg-[#f3d3df]', 'bg-[#dfb3d7]', 'bg-[#f5bfd0]'];
+@endphp
 
-    <!-- En-tête -->
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold text-[#700D29]">Clients</h1>
+<div class="space-y-6 text-[#321b25]">
+
+    {{-- EN-TÊTE --}}
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+            <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#f8d5e2] text-xl text-[#a51c50]">
+                <i class="fa-solid fa-users"></i>
+            </span>
+            <div>
+                <h1 class="text-2xl font-bold">Gestion des clients</h1>
+                <p class="text-sm text-[#806d76]">Consultez et gérez tous vos clients.</p>
+            </div>
+        </div>
 
         <a href="{{ route('clients.create') }}"
-           class="bg-[#700D29] text-white px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition">
-            <i class="fas fa-plus mr-1"></i> Nouveau client
+           class="rounded-xl bg-[#a51c50] px-6 py-3 font-semibold text-white shadow-md transition hover:bg-[#8e1646]">
+            <i class="fa-solid fa-plus mr-2"></i>Ajouter un client
         </a>
     </div>
 
-    <!-- Message de succès -->
     @if (session('success'))
-        <div class="bg-green-100 text-green-700 p-3 rounded-lg mb-4 text-sm">
-            {{ session('success') }}
-        </div>
+        <p class="rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700">{{ session('success') }}</p>
     @endif
 
-    <!-- Recherche -->
-    <form method="GET" action="{{ route('clients.index') }}" class="mb-4">
-        <div class="flex items-center border border-gray-200 rounded-xl px-4 bg-white w-full md:w-96">
-            <i class="fas fa-magnifying-glass text-[#700D29]"></i>
-            <input type="text" name="search" value="{{ request('search') }}"
-                   placeholder="Rechercher un client..."
-                   class="w-full p-2 outline-none bg-transparent text-sm">
-        </div>
-    </form>
-
-    <!-- Tableau -->
-    <div class="bg-white rounded-2xl shadow overflow-hidden">
-        <table class="w-full text-sm text-left">
-            <thead class="bg-[#FFF0F4] text-[#700D29]">
-                <tr>
-                    <th class="px-4 py-3">Nom</th>
-                    <th class="px-4 py-3">Téléphone</th>
-                    <th class="px-4 py-3">Email</th>
-                    <th class="px-4 py-3 text-right">Actions</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @forelse ($clients as $client)
-                    <tr class="border-t border-gray-100 hover:bg-gray-50">
-                        <td class="px-4 py-3 font-medium">{{ $client->prenom }} {{ $client->nom }}</td>
-                        <td class="px-4 py-3">{{ $client->telephone }}</td>
-                        <td class="px-4 py-3">{{ $client->email ?? '-' }}</td>
-                        <td class="px-4 py-3 text-right space-x-3">
-                            <a href="{{ route('clients.show', $client) }}"
-                               class="text-[#700D29] hover:underline">Voir</a>
-                            <a href="{{ route('clients.edit', $client) }}"
-                               class="text-[#700D29] hover:underline">Modifier</a>
-
-                            <form method="POST" action="{{ route('clients.destroy', $client) }}"
-                                  class="inline"
-                                  onsubmit="return confirm('Archiver ce client ?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:underline">Archiver</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
+    {{-- TABLEAU --}}
+    <div class="overflow-hidden rounded-2xl bg-white shadow-[0_3px_10px_#e8d7df]">
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[640px] text-left">
+                <thead class="bg-[#fbeef3] text-sm font-semibold">
                     <tr>
-                        <td colspan="4" class="px-4 py-6 text-center text-gray-400">
-                            Aucun client trouvé.
-                        </td>
+                        <th class="px-6 py-4">Client</th>
+                        <th class="px-6 py-4">Téléphone</th>
+                        <th class="px-6 py-4">Date d'inscription</th>
+                        <th class="w-32 px-6 py-4 text-right">Actions</th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+
+                <tbody class="divide-y divide-[#f0dfe7] text-sm">
+                    @forelse ($clients as $client)
+                        <tr class="transition hover:bg-[#fffafc]">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center  gap-4">
+                                    <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-bold text-[#780d25] {{ $teintes[$client->id % count($teintes)] }}">
+                                        {{ strtoupper(mb_substr($client->prenom, 0, 1) . mb_substr($client->nom, 0, 1)) }}
+                                    </span>
+                                    <div>
+                                        <a href="{{ route('clients.show', $client) }}" class="text-base font-semibold hover:text-[#a51c50]">
+                                            {{ $client->nom_complet }}
+                                        </a>
+                                        @if ($client->statut)
+                                            <p class="text-xs text-[#806d76]">{{ ucfirst(str_replace('_', ' ', $client->statut->value)) }}</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="px-6 py-4 text-base">{{ $client->telephone }}</td>
+
+                            <td class="px-6 py-4 text-base">{{ $client->date_inscription?->format('d/m/Y') }}</td>
+
+                            <td class="px-6 py-4">
+                                <div class="flex items-center justify-end gap-6 text-lg">
+                                    <a href="{{ route('clients.edit', $client) }}" aria-label="Modifier" title="Modifier"
+                                       class="text-[#e8923a] transition hover:scale-110">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+
+                                    <form method="POST" action="{{ route('clients.destroy', $client) }}"
+                                          onsubmit="return confirm('Archiver ce client ?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" aria-label="Archiver" title="Archiver"
+                                                class="text-[#d9304f] transition hover:scale-110">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-10 text-center text-[#806d76]">Aucun client trouvé.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- Pagination -->
-    <div class="mt-4">
-        {{ $clients->links() }}
-    </div>
+    {{-- PAGINATION --}}
+    @if ($clients instanceof \Illuminate\Pagination\LengthAwarePaginator && $clients->hasPages())
+        <nav class="flex items-center justify-center gap-2" aria-label="Pagination">
+            @if ($clients->onFirstPage())
+                <span class="flex h-9 w-9 items-center justify-center text-gray-300"><i class="fa-solid fa-chevron-left text-xs"></i></span>
+            @else
+                <a href="{{ $clients->previousPageUrl() }}" class="flex h-9 w-9 items-center justify-center text-[#806d76] hover:text-[#a51c50]">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </a>
+            @endif
 
+            @foreach ($clients->getUrlRange(1, $clients->lastPage()) as $page => $url)
+                <a href="{{ $url }}"
+                   @class([
+                       'flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium transition',
+                       'bg-[#a51c50] text-white shadow' => $page === $clients->currentPage(),
+                       'hover:bg-[#f5edf1]' => $page !== $clients->currentPage(),
+                   ])>{{ $page }}</a>
+            @endforeach
+
+            @if ($clients->hasMorePages())
+                <a href="{{ $clients->nextPageUrl() }}" class="flex h-9 w-9 items-center justify-center text-[#806d76] hover:text-[#a51c50]">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </a>
+            @else
+                <span class="flex h-9 w-9 items-center justify-center text-gray-300"><i class="fa-solid fa-chevron-right text-xs"></i></span>
+            @endif
+        </nav>
+    @endif
 </div>
 @endsection
