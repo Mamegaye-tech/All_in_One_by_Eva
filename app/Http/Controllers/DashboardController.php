@@ -12,7 +12,7 @@ class DashboardController extends Controller
     {
         $stats = [
             'clients'  => Client::count(),
-            'rdv_jour' => RendezVous::whereDate('date', today())->count(),
+            'rdv_jour' => RendezVous::whereDate('debut', today())->count(),
             'ca_jour'  => 450000,   // valeur fixe pour l'instant
             'depenses' => 180000,   // valeur fixe pour l'instant
         ];
