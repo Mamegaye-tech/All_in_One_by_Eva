@@ -50,9 +50,9 @@
                     Prestations
                 </x-nav-link>
 
-                <x-nav-link route="#" icon="fa-briefcase">
-                    Caisse
-                </x-nav-link>
+            <x-nav-link route="caisse.index" pattern="caisse.*" icon="fa-cash-register">
+    Caisse
+</x-nav-link>
 
                 <x-nav-link route="#" icon="fa-sack-dollar">
                     Dépenses
