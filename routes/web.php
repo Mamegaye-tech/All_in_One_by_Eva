@@ -52,7 +52,10 @@ Route::middleware(['auth', 'actif'])->group(function () {
         ->name('clients.toggle-status');
 
     // Gestion des clients (sans suppression définitive)
-    Route::resource('clients', ClientController::class)->except('destroy');
+   Route::resource('clients', ClientController::class)->except(['destroy']);
+
+Route::delete('/clients/{client}', [ClientController::class, 'destroy'])
+    ->name('clients.destroy');
 
     // RENDEZ-VOUS
 
