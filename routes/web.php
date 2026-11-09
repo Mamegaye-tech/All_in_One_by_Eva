@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\CaisseController;
 use App\Http\Controllers\PrestationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -60,8 +61,11 @@ Route::middleware(['auth', 'actif'])->group(function () {
 
     Route::patch('/rendez-vous/{rendezVous}/statut', [RendezVousController::class, 'changerStatut'])
         ->name('rendez-vous.statut');
-});
 
+
+Route::get('/caisse', [CaisseController::class, 'index'])
+    ->name('caisse.index');
+});
 // Route de débogage temporaire désactivée
 // Route::get('/debug-output', function () {
 //     $envoye = headers_sent($fichier, $ligne);

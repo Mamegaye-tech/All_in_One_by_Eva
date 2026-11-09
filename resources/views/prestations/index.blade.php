@@ -282,28 +282,7 @@ body > div > aside nav a {
 
 <div class="prestations-page">
 
-    <!-- BARRE SUPERIEURE -->
-    <div class="topbar">
-
-        <button class="menu-btn">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchPrestation"
-                placeholder="Rechercher une prestation...">
-        </div>
-
-        <div class="admin">
-            <i class="fas fa-bell" style="color:#780d35;font-size:22px"></i>
-            &nbsp;&nbsp;
-            <i class="fas fa-user-circle" style="font-size:30px"></i>
-            Administratrice
-            <i class="fas fa-chevron-down"></i>
-        </div>
-
-    </div>
+    
 
     <!-- TITRE -->
     <div class="page-header">
