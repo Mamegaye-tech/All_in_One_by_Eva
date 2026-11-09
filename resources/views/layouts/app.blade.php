@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -47,7 +46,7 @@
                     Rendez-vous
                 </x-nav-link>
 
-                <x-nav-link route="#" icon="fa-spa">
+                <x-nav-link route="prestations.index" pattern="prestations.*" icon="fa-spa">
                     Prestations
                 </x-nav-link>
 
@@ -143,6 +142,7 @@
 
             <main class="flex-1 min-w-0 p-6">
                 @yield('content')
+                @yield('contenu')
             </main>
         </div>
 
