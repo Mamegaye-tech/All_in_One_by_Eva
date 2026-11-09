@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -5,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\RendezVousController;
+use App\Http\Controllers\AccueilController;
 
 // Page d'accueil
 Route::redirect('/', '/dashboard');
@@ -31,17 +33,30 @@ Route::middleware(['auth', 'actif'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 
+    // ACCUEIL ADMINISTRATEUR
+    Route::get('/accueil', [AccueilController::class, 'admin'])
+        ->name('accueil.admin');
+
     // CLIENTS
 
-    // Export CSV (avant les routes resource)
-    Route::get('clients/export', [ClientController::class, 'export'])
+    // Export CSV
+    Route::get('/clients/export', [ClientController::class, 'export'])
         ->name('clients.export');
 
     // Activation / désactivation
-    Route::patch('clients/{client}/statut', [ClientController::class, 'toggleStatus'])
+    Route::patch('/clients/{client}/statut', [ClientController::class, 'toggleStatus'])
         ->name('clients.toggle-status');
 
-    // Gestion des clients (sans suppression : on désactive)
-    Route::resource('clients', ClientController::class)->except('destroy');
-
+    // Gestion des clients (sans suppression définitive)
+   Route::resource('clients', ClientController::class);
     // RENDEZ-VOUS
+
+    // Liste et création des rendez-vous uniquement
+    Route::resource('rendez-vous', RendezVousController::class)
+        ->only(['index', 'store']);
+
+    // Changement de statut d'un rendez-vous
+    Route::patch('/rendez-vous/{rendezVous}/statut', [RendezVousController::class, 'changerStatut'])
+        ->name('rendez-vous.statut');
+
+});

@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Http\Middleware;
@@ -11,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class EnsureUserIsActive
 {
     /**
-     * Déconnecte immédiatement un compte désactivé pendant sa session.
+     * DÃ©connecte immÃ©diatement un compte dÃ©sactivÃ© pendant sa session.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -25,7 +24,7 @@ class EnsureUserIsActive
 
             return redirect()->route('login')
                 ->withErrors([
-                    'email' => 'Ce compte est désactivé. Contactez l’administratrice.'
+                    'email' => 'Ce compte est dÃ©sactivÃ©. Contactez lâ€™administratrice.'
                 ]);
         }
 
