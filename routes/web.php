@@ -1,16 +1,17 @@
+
 <?php
-use App\Http\Controllers\CaisseController;
-use App\Http\Controllers\PrestationController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\RendezVousController;
+
 use App\Http\Controllers\AccueilController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CaisseController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PrestationController;
+use App\Http\Controllers\RendezVousController;
+use Illuminate\Support\Facades\Route;
 
 // Page d'accueil
 Route::redirect('/', '/dashboard');
-
 
 // AUTHENTIFICATION
 Route::middleware('guest')->group(function () {
@@ -30,7 +31,7 @@ Route::middleware(['auth', 'actif'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    // Accueil admin
+    // Accueil administrateur
     Route::get('/accueil', [AccueilController::class, 'admin'])
         ->name('accueil.admin');
 
@@ -44,16 +45,17 @@ Route::middleware(['auth', 'actif'])->group(function () {
 
     // CLIENTS
 
-    // Export CSV (avant les routes resource)
-    Route::get('clients/export', [ClientController::class, 'export'])
+    Route::get('/clients/export', [ClientController::class, 'export'])
         ->name('clients.export');
 
-    // Activation / désactivation
-    Route::patch('clients/{client}/statut', [ClientController::class, 'toggleStatus'])
+    Route::patch('/clients/{client}/statut', [ClientController::class, 'toggleStatus'])
         ->name('clients.toggle-status');
 
-    // Gestion complète des clients
-    Route::resource('clients', ClientController::class);
+    Route::resource('clients', ClientController::class)
+        ->except(['destroy']);
+
+    Route::delete('/clients/{client}', [ClientController::class, 'destroy'])
+        ->name('clients.destroy');
 
     // RENDEZ-VOUS
     Route::resource('rendez-vous', RendezVousController::class)
@@ -62,12 +64,8 @@ Route::middleware(['auth', 'actif'])->group(function () {
     Route::patch('/rendez-vous/{rendezVous}/statut', [RendezVousController::class, 'changerStatut'])
         ->name('rendez-vous.statut');
 
+    // CAISSE
+    Route::get('/caisse', [CaisseController::class, 'index'])
+        ->name('caisse.index');
 
-Route::get('/caisse', [CaisseController::class, 'index'])
-    ->name('caisse.index');
 });
-// Route de débogage temporaire désactivée
-// Route::get('/debug-output', function () {
-//     $envoye = headers_sent($fichier, $ligne);
-//     return "headers_sent : " . ($envoye ? 'OUI' : 'non');
-// });
