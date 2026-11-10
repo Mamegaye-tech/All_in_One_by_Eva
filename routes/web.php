@@ -1,7 +1,9 @@
+
 <?php
 
 use App\Http\Controllers\AccueilController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CaisseController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PrestationController;
@@ -43,28 +45,27 @@ Route::middleware(['auth', 'actif'])->group(function () {
 
     // CLIENTS
 
-    // Export CSV (avant la route resource)
     Route::get('/clients/export', [ClientController::class, 'export'])
         ->name('clients.export');
 
-    // Activation / désactivation
     Route::patch('/clients/{client}/statut', [ClientController::class, 'toggleStatus'])
         ->name('clients.toggle-status');
 
-    // Gestion des clients (sans suppression définitive)
-   Route::resource('clients', ClientController::class)->except(['destroy']);
+    Route::resource('clients', ClientController::class)
+        ->except(['destroy']);
 
-Route::delete('/clients/{client}', [ClientController::class, 'destroy'])
-    ->name('clients.destroy');
+    Route::delete('/clients/{client}', [ClientController::class, 'destroy'])
+        ->name('clients.destroy');
 
     // RENDEZ-VOUS
-
-    // Liste et création des rendez-vous uniquement
     Route::resource('rendez-vous', RendezVousController::class)
         ->only(['index', 'store']);
 
-    // Changement de statut d'un rendez-vous
     Route::patch('/rendez-vous/{rendezVous}/statut', [RendezVousController::class, 'changerStatut'])
         ->name('rendez-vous.statut');
+
+    // CAISSE
+    Route::get('/caisse', [CaisseController::class, 'index'])
+        ->name('caisse.index');
 
 });

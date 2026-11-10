@@ -69,23 +69,12 @@
     @media (max-width: 480px) {
         .dash .stats { grid-template-columns: 1fr; }
     }
+
 </style>
 @endpush
 
 @section('content')
 <div class="dash">
-
-    <!-- BARRE DU HAUT -->
-    <header class="topbar">
-        <div class="top-left">
-            <input type="search" class="search" placeholder="Rechercher un client, un rendez-vous...">
-        </div>
-        <div class="profile">
-            <i class="fa-solid fa-bell"></i>
-            <div class="avatar"><i class="fa-solid fa-user"></i></div>
-            <strong>{{ auth()->user()->name }}</strong>
-        </div>
-    </header>
 
     <!-- TITRE -->
     <div class="welcome">
