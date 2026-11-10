@@ -13,6 +13,22 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     @stack('styles')
+    <style>
+    /* Masquer la barre de défilement de la sidebar */
+    .sidebar-menu {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .sidebar-menu::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Garder un défilement fluide */
+    .sidebar-menu {
+        scroll-behavior: smooth;
+    }
+</style>
 </head>
 
 <body class="bg-[#FFF8FA] text-[#321b25]">
@@ -25,14 +41,14 @@
                       max-lg:fixed max-lg:inset-y-0 max-lg:left-0 max-lg:z-40 max-lg:shadow-2xl">
 
             <!-- LOGO -->
-            <div class="text-center mb-5 border-b border-pink-300/40 pb-3">
+            <div class="text-center mb-5 pb-3">
                 <img src="{{ asset('images/logo1.png') }}"
                      alt="All in One by Eva"
                      class="w-28 mx-auto h-auto">
             </div>
 
             <!-- MENU -->
-            <nav class="flex-1 space-y-2 text-sm overflow-y-auto pt-1">
+           <nav class="flex-1 space-y-2 text-sm overflow-y-auto overflow-x-hidden pt-1 sidebar-menu">
 
                 <x-nav-link route="dashboard" icon="fa-house">
                     Tableau de bord
@@ -85,7 +101,7 @@
             </nav>
 
             <!-- DECONNEXION -->
-            <div class="border-t border-pink-300/40 pt-3 mt-3">
+            <div class="pt-3 mt-3">
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
