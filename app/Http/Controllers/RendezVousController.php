@@ -35,8 +35,29 @@ class RendezVousController extends Controller
             ->orderBy('debut')
             ->get();
 
+        // RECHERCHE : tous les rendez-vous d'un client, toutes dates confondues
+        $recherche = trim((string) $request->query('search', ''));
+        $resultats = null;
+
+        if ($recherche !== '') {
+            $resultats = RendezVous::with(['client', 'employe', 'lignes'])
+                ->whereHas('client', function ($q) use ($recherche) {
+                    // Chaque mot doit correspondre au nom ou au prénom ("Awa Diop" fonctionne)
+                    foreach (preg_split('/\s+/', $recherche) as $mot) {
+                        $q->where(function ($w) use ($mot) {
+                            $w->where('nom', 'like', "%{$mot}%")
+                              ->orWhere('prenom', 'like', "%{$mot}%");
+                        });
+                    }
+                })
+                ->orderByDesc('debut')
+                ->paginate(8)
+                ->withQueryString();
+        }
+
         return view('rendez-vous.index', compact(
-            'mois', 'jour', 'debutGrille', 'finGrille', 'joursAvecRdv', 'rdvDuJour'
+            'mois', 'jour', 'debutGrille', 'finGrille', 'joursAvecRdv', 'rdvDuJour',
+            'recherche', 'resultats'
         ));
     }
 

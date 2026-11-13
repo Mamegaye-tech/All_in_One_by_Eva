@@ -9,11 +9,30 @@ use Illuminate\Support\Facades\Storage;
 class PrestationController extends Controller
 {
     // Afficher la liste des prestations
-    public function index()
+  public function index(Request $request)
     {
-        $prestations = Prestation::latest()->get();
+        $recherche = $request->query('search');
 
-        return view('prestations.index', compact('prestations'));
+        $prestations = Prestation::query()
+            ->when($recherche, function ($query) use ($recherche) {
+                $query->where(function ($q) use ($recherche) {
+                    $q->where('nom', 'like', "%{$recherche}%")
+                    ->orWhere('categorie', 'like', "%{$recherche}%")
+                    ->orWhere('description', 'like', "%{$recherche}%");
+                });
+            })
+            ->latest()
+            ->paginate(4)
+            ->withQueryString();
+
+        $total     = Prestation::count();
+        $actives   = Prestation::where('statut', true)->count();
+        $inactives = $total - $actives;
+        $prixMoyen = Prestation::avg('prix') ?? 0;
+
+        return view('prestations.index', compact(
+            'prestations', 'total', 'actives', 'inactives', 'prixMoyen'
+        ));
     }
 
     // Afficher le formulaire d'ajout

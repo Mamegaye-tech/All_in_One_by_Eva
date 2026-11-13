@@ -3,7 +3,7 @@
 @section('contenu')
 
 <style>
-    .form-page { background:#fff7fa; min-height:100vh; padding:25px 28px; color:#390c29; }
+    .form-page { background:#fff7fa;padding:25px 28px; color:#390c29; }
     .form-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; gap:15px; flex-wrap:wrap; }
     .form-header h1 { font-size:30px; color:#780d25; }
     .form-header p { color:#806d76; margin-top:6px; }

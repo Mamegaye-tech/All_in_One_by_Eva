@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+
+@section('search_action', route('rendez-vous.index'))
+@section('search_placeholder', 'Rechercher un rendez-vous...')
+
 @section('content')
 @php
     $couleurs = [
@@ -38,6 +42,68 @@
     @if (session('success'))
         <p class="rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700 xl:col-span-2">{{ session('success') }}</p>
     @endif
+
+    @if (session('success'))
+    <p class="rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700 xl:col-span-2">{{ session('success') }}</p>
+@endif
+
+{{-- AJOUTER ICI : le bloc des résultats --}}
+@if ($resultats !== null)
+    <section class="rounded-2xl bg-white p-6 shadow-[0_3px_10px_#e8d7df] xl:col-span-2">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <h3 class="text-lg font-bold">Résultats pour « {{ $recherche }} »</h3>
+                <p class="text-sm text-[#806d76]">{{ $resultats->total() }} rendez-vous trouvé(s), toutes dates confondues.</p>
+            </div>
+            <a href="{{ route('rendez-vous.index') }}"
+               class="rounded-lg bg-[#f5edf1] px-5 py-2 text-sm font-medium transition hover:bg-[#f0dfe7]">
+                <i class="fa-solid fa-xmark mr-1"></i>Effacer la recherche
+            </a>
+        </div>
+
+        <div class="mt-5 divide-y divide-[#f0dfe7]">
+            @forelse ($resultats as $rdv)
+                <a href="{{ route('rendez-vous.index', ['mois' => $rdv->debut->format('Y-m'), 'jour' => $rdv->debut->toDateString()]) }}"
+                   class="flex items-center gap-4 py-3 transition hover:bg-[#fff8fb]">
+                    <span class="h-2.5 w-2.5 shrink-0 rounded-full {{ $couleurs[$rdv->statut->tone()] }}"></span>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-sm font-semibold">
+                            {{ $rdv->debut->locale('fr')->translatedFormat('D j F Y') }} à {{ $rdv->debut->format('H:i') }}
+                            – {{ $rdv->libellePrestations() ?: 'Sans prestation' }}
+                        </p>
+                        <p class="text-xs text-[#806d76]">
+                            {{ $rdv->client?->nom_complet ?: 'Client' }}
+                            @if ($rdv->employe) · avec {{ $rdv->employe->nom_complet }} @endif
+                        </p>
+                    </div>
+                    <span class="text-xs font-medium text-[#806d76]">{{ $rdv->statut->label() }}</span>
+                </a>
+            @empty
+                <p class="py-4 text-sm text-[#806d76]">Aucun rendez-vous trouvé pour cette recherche.</p>
+            @endforelse
+        </div>
+
+        @if ($resultats->hasPages())
+            <div class="mt-4 flex items-center justify-between text-sm">
+                @if ($resultats->onFirstPage())
+                    <span class="text-gray-300">← Précédent</span>
+                @else
+                    <a href="{{ $resultats->previousPageUrl() }}" class="text-[#780d25]">← Précédent</a>
+                @endif
+
+                <span class="text-[#806d76]">Page {{ $resultats->currentPage() }} / {{ $resultats->lastPage() }}</span>
+
+                @if ($resultats->hasMorePages())
+                    <a href="{{ $resultats->nextPageUrl() }}" class="text-[#780d25]">Suivant →</a>
+                @else
+                    <span class="text-gray-300">Suivant →</span>
+                @endif
+            </div>
+        @endif
+    </section>
+@endif
+
+@if ($resultats === null)
 
     {{-- CALENDRIER --}}
     <section class="rounded-2xl bg-white p-6 shadow-[0_3px_10px_#e8d7df]">
@@ -125,6 +191,7 @@
             @endforelse
         </div>
     </aside>
+    @endif
 </div>
 
 {{-- FORMULAIRE NOUVEAU RENDEZ-VOUS --}}

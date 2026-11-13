@@ -48,7 +48,7 @@
             </div>
 
             <!-- MENU -->
-           <nav class="flex-1 space-y-2 text-sm overflow-y-auto overflow-x-hidden pt-1 sidebar-menu">
+            <nav class="flex-1 space-y-2 text-sm overflow-y-auto pt-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 
                 <x-nav-link route="dashboard" icon="fa-house">
                     Tableau de bord
@@ -66,35 +66,35 @@
                     Prestations
                 </x-nav-link>
 
-            <x-nav-link route="caisse.index" pattern="caisse.*" icon="fa-cash-register">
-    Caisse
-</x-nav-link>
+                <x-nav-link route="caisse.index" pattern="caisse.*" icon="fa-cash-register">
+                Caisse
+                </x-nav-link>
 
-                <x-nav-link route="#" icon="fa-sack-dollar">
+                <x-nav-link route="depenses.index" icon="fa-sack-dollar">
                     Dépenses
                 </x-nav-link>
 
-                <x-nav-link route="#" icon="fa-boxes-stacked">
+                <x-nav-link route="stock.index" icon="fa-boxes-stacked">
                     Stock
                 </x-nav-link>
 
-                <x-nav-link route="#" icon="fa-cake-candles">
+                <x-nav-link route="anniversaires.index" icon="fa-cake-candles">
                     Anniversaires
                 </x-nav-link>
 
-                <x-nav-link route="#" icon="fa-gift">
+                <x-nav-link route="campagnes.index" icon="fa-gift">
                     Campagnes
                 </x-nav-link>
 
-                <x-nav-link route="#" icon="fa-chart-column">
+                <x-nav-link route="rapports.index" icon="fa-chart-column">
                     Rapports
                 </x-nav-link>
 
-                <x-nav-link route="#" icon="fa-user-tie">
+                <x-nav-link route="equipe.index" icon="fa-user-tie">
                     Equipe
                 </x-nav-link>
 
-                <x-nav-link route="#" icon="fa-gear">
+                <x-nav-link route="parametres.index" icon="fa-gear">
                     Paramètres
                 </x-nav-link>
 
@@ -131,11 +131,14 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
 
-                <form method="GET" action="{{ route('clients.index') }}" class="relative max-w-md flex-1">
+            @unless (View::hasSection('sans_recherche'))
+                <form method="GET" action="@yield('search_action', route('clients.index'))" class="relative max-w-md flex-1">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[#806d76]"></i>
-                    <input type="search" name="search" value="{{ request('search') }}" placeholder="Rechercher un client..."
-                           class="w-full rounded-full bg-[#f5edf1] py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#a51c50]/40">
+                    <input type="search" name="search" value="{{ request('search') }}"
+                        placeholder="@yield('search_placeholder', 'Rechercher un client...')"
+                        class="w-full rounded-full bg-[#f5edf1] py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-[#a51c50]/40">
                 </form>
+            @endunless
 
                 <div class="ml-auto flex items-center gap-4">
                     <button type="button" aria-label="Notifications"

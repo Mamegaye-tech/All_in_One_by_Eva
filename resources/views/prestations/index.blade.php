@@ -1,49 +1,15 @@
 @extends('layouts.app')
 
+@section('search_action', route('prestations.index'))
+@section('search_placeholder', 'Rechercher une prestation...')
+
 @section('contenu')
 
 <style>
     .prestations-page {
         background: #fff7fa;
-        min-height: 100vh;
         padding: 25px 28px;
         color: #390c29;
-    }
-
-    .topbar {
-        display: flex;
-        align-items: center;
-        gap: 25px;
-        margin-bottom: 30px;
-    }
-
-    .menu-btn {
-        color: #780d35;
-        font-size: 25px;
-        border: none;
-        background: none;
-    }
-
-    .search-box {
-        background: #f9eaf1;
-        border-radius: 30px;
-        padding: 13px 22px;
-        width: 45%;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .search-box input {
-        border: none;
-        outline: none;
-        background: transparent;
-        width: 100%;
-    }
-
-    .admin {
-        margin-left: auto;
-        font-weight: 600;
     }
 
     .page-header {
@@ -143,6 +109,25 @@
         border-bottom: 1px solid #f1dfe8;
     }
 
+    /* Plus d'espace sur les 3 dernières colonnes (Durée, Statut, Actions) */
+.prestations-table th:nth-last-child(-n+3),
+.prestations-table td:nth-last-child(-n+3) {
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+/* Colonne Actions collée à droite */
+.prestations-table th:last-child {
+    text-align: right;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+}
+
     .prestations-table tbody tr:hover {
         background: #fff8fb;
     }
@@ -213,16 +198,32 @@
         justify-content: space-between;
         align-items: center;
         padding: 20px 10px;
+        gap: 15px;
+        flex-wrap: wrap;
     }
 
-    .pages button {
+    .pages {
+        display: flex;
+        gap: 6px;
+    }
+
+    .pages a,
+    .pages span {
         border: 1px solid #f0dce6;
         background: white;
         border-radius: 50%;
         width: 42px;
         height: 42px;
         color: #780d35;
-        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .pages a:hover {
+        background: #fbe2ed;
     }
 
     .pages .current {
@@ -230,13 +231,18 @@
         color: white;
     }
 
-    @media(max-width: 1000px) {
+    .pages .disabled {
+        opacity: .4;
+        cursor: not-allowed;
+    }
+
+    @media (max-width: 1000px) {
         .stats {
             grid-template-columns: repeat(2, 1fr);
         }
     }
 
-    @media(max-width: 600px) {
+    @media (max-width: 600px) {
         .prestations-page {
             padding: 15px;
         }
@@ -250,39 +256,10 @@
             gap: 15px;
             flex-direction: column;
         }
-
-        .search-box {
-            width: 100%;
-        }
     }
-
-    /* Correction de la barre latérale sur Prestations */
-body > div > aside {
-    width: 256px !important;
-    min-width: 256px !important;
-    display: flex !important;
-    flex-direction: column !important;
-}
-
-body > div > aside nav {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 8px !important;
-}
-
-body > div > aside nav a {
-    display: flex !important;
-    align-items: center !important;
-    width: 100% !important;
-}
 </style>
 
-
-
 <div class="prestations-page">
-
-    
 
     <!-- TITRE -->
     <div class="page-header">
@@ -296,17 +273,18 @@ body > div > aside nav a {
             <p>Gérez vos prestations et leurs informations.</p>
         </div>
 
-       <a href="{{ route('prestations.create') }}" class="btn-ajouter" style="text-decoration:none;">
-    <i class="fas fa-plus"></i>
-    &nbsp; Ajouter une prestation
-</a>
+        <a href="{{ route('prestations.create') }}" class="btn-ajouter" style="text-decoration:none;">
+            <i class="fas fa-plus"></i>
+            &nbsp; Ajouter une prestation
+        </a>
 
     </div>
+
     @if (session('success'))
-    <div style="background:#dcf7e6;color:#16894d;padding:13px 18px;border-radius:12px;margin-bottom:20px;font-weight:600;">
-        {{ session('success') }}
-    </div>
-@endif
+        <div style="background:#dcf7e6;color:#16894d;padding:13px 18px;border-radius:12px;margin-bottom:20px;font-weight:600;">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <!-- STATISTIQUES -->
     <div class="stats">
@@ -317,19 +295,19 @@ body > div > aside nav a {
             </div>
 
             <div>
-                <h2 id="totalPrestations">6</h2>
+                <h2>{{ $total }}</h2>
                 <p>Prestations totales</p>
             </div>
         </div>
 
         <div class="stat-card">
             <div class="stat-icon">
-                <i class="fas fa-calendar-alt"></i>
+                <i class="fas fa-coins"></i>
             </div>
 
             <div>
-                <h2 style="font-size:25px">450 000 <small>FCFA</small></h2>
-                <p>Revenus générés</p>
+                <h2 style="font-size:25px">{{ number_format($prixMoyen, 0, ',', ' ') }} <small>FCFA</small></h2>
+                <p>Prix moyen</p>
             </div>
         </div>
 
@@ -339,7 +317,7 @@ body > div > aside nav a {
             </div>
 
             <div>
-                <h2 id="totalActives">4</h2>
+                <h2>{{ $actives }}</h2>
                 <p>Prestations actives</p>
             </div>
         </div>
@@ -350,7 +328,7 @@ body > div > aside nav a {
             </div>
 
             <div>
-                <h2 id="totalInactives">2</h2>
+                <h2>{{ $inactives }}</h2>
                 <p>Prestations inactives</p>
             </div>
         </div>
@@ -374,154 +352,129 @@ body > div > aside nav a {
                 </tr>
             </thead>
 
-            <tbody id="listePrestations">
+            <tbody>
 
-    @forelse($prestations as $prestation)
+                @forelse($prestations as $prestation)
 
-        <tr>
-            <td>
-                @if($prestation->image)
-                    <img src="{{ asset('storage/' . $prestation->image) }}"
-                         class="prestation-img"
-                         alt="{{ $prestation->nom }}">
-                @else
-                    Aucune image
-                @endif
-            </td>
-
-            <td>
-                <div class="prestation-name">
-                    {{ $prestation->nom }}
-                </div>
-
-                <div class="prestation-description">
-                    {{ $prestation->description }}
-                </div>
-            </td>
-
-            <td>
-                <span class="categorie">
-                    {{ $prestation->categorie }}
-                </span>
-            </td>
-
-            <td>
-                {{ number_format($prestation->prix, 0, ',', ' ') }} FCFA
-            </td>
-
-            <td>{{ $prestation->duree }} min</td>
-
-            <td>
-                @if($prestation->statut)
-                    <span class="statut actif">● Actif</span>
-                @else
-                    <span class="statut inactif">● Inactif</span>
-                @endif
-            </td>
+                    <tr>
+                        <td>
+                            @if($prestation->image)
+                                <img src="{{ asset('storage/' . $prestation->image) }}"
+                                     class="prestation-img"
+                                     alt="{{ $prestation->nom }}">
+                            @else
+                                Aucune image
+                            @endif
+                        </td>
 
                         <td>
-                <div style="display:flex; align-items:center; gap:5px;">
+                            <div class="prestation-name">
+                                {{ $prestation->nom }}
+                            </div>
 
-                    <a href="{{ route('prestations.edit', $prestation->id) }}"
-                       class="action-btn"
-                       style="text-decoration:none; display:inline-flex;"
-                       title="Modifier">
-                        <i class="fas fa-pen"></i>
-                    </a>
+                            <div class="prestation-description">
+                                {{ $prestation->description }}
+                            </div>
+                        </td>
 
-                    <form action="{{ route('prestations.destroy', $prestation->id) }}"
-                          method="POST"
-                          style="margin:0;"
-                          onsubmit="return confirm('Voulez-vous vraiment supprimer cette prestation ?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="action-btn" style="margin-right:0;" title="Supprimer">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
+                        <td>
+                            <span class="categorie">
+                                {{ $prestation->categorie }}
+                            </span>
+                        </td>
 
-                </div>
-            </td>
-        </tr>
+                        <td>
+                            {{ number_format($prestation->prix, 0, ',', ' ') }} FCFA
+                        </td>
 
-    @empty
+                        <td>{{ $prestation->duree }} min</td>
 
-        <tr>
-            <td colspan="7" style="text-align:center;padding:30px;">
-                Aucune prestation enregistrée.
-            </td>
-        </tr>
+                        <td>
+                            @if($prestation->statut)
+                                <span class="statut actif">● Actif</span>
+                            @else
+                                <span class="statut inactif">● Inactif</span>
+                            @endif
+                        </td>
 
-    @endforelse
+                        <td>
+                            <div class="actions">
 
-</tbody>
+                                <a href="{{ route('prestations.edit', $prestation->id) }}"
+                                   class="action-btn"
+                                   style="text-decoration:none; display:inline-flex;"
+                                   title="Modifier">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+
+                                <form action="{{ route('prestations.destroy', $prestation->id) }}"
+                                      method="POST"
+                                      style="margin:0;"
+                                      onsubmit="return confirm('Voulez-vous vraiment supprimer cette prestation ?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="action-btn" style="margin-right:0;" title="Supprimer">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                @empty
+
+                    <tr>
+                        <td colspan="7" style="text-align:center;padding:30px;">
+                            Aucune prestation enregistrée.
+                        </td>
+                    </tr>
+
+                @endforelse
+
+            </tbody>
         </table>
 
     </div>
 
     <!-- PAGINATION -->
     <div class="pagination">
-        <strong id="affichage">Affichage de 1 à 6 sur 6 prestations</strong>
+        <strong>
+            Affichage de {{ $prestations->firstItem() ?? 0 }}
+            à {{ $prestations->lastItem() ?? 0 }}
+            sur {{ $prestations->total() }} prestations
+        </strong>
 
-        <div class="pages">
-            <button><i class="fas fa-chevron-left"></i></button>
-            <button class="current">1</button>
-            <button><i class="fas fa-chevron-right"></i></button>
-        </div>
+        @if ($prestations->hasPages())
+            <div class="pages">
+
+                {{-- Précédent --}}
+                @if ($prestations->onFirstPage())
+                    <span class="disabled"><i class="fas fa-chevron-left"></i></span>
+                @else
+                    <a href="{{ $prestations->previousPageUrl() }}"><i class="fas fa-chevron-left"></i></a>
+                @endif
+
+                {{-- Numéros de pages (2 avant et 2 après la page courante) --}}
+                @for ($i = max(1, $prestations->currentPage() - 2); $i <= min($prestations->lastPage(), $prestations->currentPage() + 2); $i++)
+                    @if ($i == $prestations->currentPage())
+                        <span class="current">{{ $i }}</span>
+                    @else
+                        <a href="{{ $prestations->url($i) }}">{{ $i }}</a>
+                    @endif
+                @endfor
+
+                {{-- Suivant --}}
+                @if ($prestations->hasMorePages())
+                    <a href="{{ $prestations->nextPageUrl() }}"><i class="fas fa-chevron-right"></i></a>
+                @else
+                    <span class="disabled"><i class="fas fa-chevron-right"></i></span>
+                @endif
+
+            </div>
+        @endif
     </div>
 
 </div>
-
-<script>
-    // RECHERCHER UNE PRESTATION
-    document.getElementById('searchPrestation').addEventListener('input', function () {
-        let recherche = this.value.toLowerCase();
-        let lignes = document.querySelectorAll('#listePrestations tr');
-
-        lignes.forEach(function (ligne) {
-            let contenu = ligne.textContent.toLowerCase();
-            ligne.style.display = contenu.includes(recherche) ? '' : 'none';
-        });
-    });
-
-    // SUPPRIMER UNE PRESTATION
-    function supprimerPrestation(bouton) {
-        if (confirm('Voulez-vous vraiment supprimer cette prestation ?')) {
-            bouton.closest('tr').remove();
-            actualiserStatistiques();
-        }
-    }
-
-    // MODIFIER UNE PRESTATION
-    function modifierPrestation(bouton) {
-        let ligne = bouton.closest('tr');
-        let nom = ligne.querySelector('.prestation-name').textContent;
-
-        alert('Modification de la prestation : ' + nom);
-    }
-
-    // AJOUTER UNE PRESTATION
-    function ajouterPrestation() {
-        alert('La fenêtre d’ajout de prestation sera créée dans la prochaine étape.');
-    }
-
-    // ACTUALISER LES STATISTIQUES
-    function actualiserStatistiques() {
-        let lignes = [...document.querySelectorAll('#listePrestations tr')];
-
-        let actives = lignes.filter(ligne =>
-            ligne.querySelector('.statut')?.classList.contains('actif')
-        ).length;
-
-        let inactives = lignes.length - actives;
-
-        document.getElementById('totalPrestations').textContent = lignes.length;
-        document.getElementById('totalActives').textContent = actives;
-        document.getElementById('totalInactives').textContent = inactives;
-
-        document.getElementById('affichage').textContent =
-            `Affichage de 1 à ${lignes.length} sur ${lignes.length} prestations`;
-    }
-</script>
 
 @endsection
