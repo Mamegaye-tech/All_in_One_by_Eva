@@ -90,7 +90,7 @@
                     Rapports
                 </x-nav-link>
 
-                <x-nav-link route="#" icon="fa-user-tie">
+                <x-nav-link route="employes.index" pattern="employes.*" icon="fa-user-tie">
                     Equipe
                 </x-nav-link>
 

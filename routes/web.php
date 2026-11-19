@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PrestationController;
 use App\Http\Controllers\RendezVousController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmployeController;
 
 // Page d'accueil
 Route::redirect('/', '/dashboard');
@@ -67,5 +68,13 @@ Route::middleware(['auth', 'actif'])->group(function () {
     // CAISSE
     Route::get('/caisse', [CaisseController::class, 'index'])
         ->name('caisse.index');
+
+            // ÉQUIPE
+    Route::patch('/employes/{employe}/statut', [EmployeController::class, 'toggleStatus'])
+        ->name('employes.toggle-status');
+
+    Route::resource('employes', EmployeController::class)
+        ->except('destroy')
+        ->parameters(['employes' => 'employe']);
 
 });
