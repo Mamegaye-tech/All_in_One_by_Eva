@@ -2,63 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employe;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class EquipeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    private function regles(): array
     {
-        //
+        return [
+            'prenom' => ['required', 'string', 'max:100'],
+            'nom' => ['required', 'string', 'max:100'],
+            'telephone' => ['nullable', 'string', 'max:30'],
+            'fonction' => ['nullable', 'string', 'max:100'],
+            'specialites' => ['nullable', 'string'],
+            'taux_commission' => ['nullable', 'numeric', 'min:0', 'max:100'],
+        ];
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(): View
     {
-        //
+        $employes = Employe::orderBy('nom')->orderBy('prenom')->get();
+
+        return view('equipe.index', compact('employes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function create(): View
     {
-        //
+        return view('equipe.create');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        $donnees = $request->validate($this->regles());
+        $donnees['is_active'] = $request->boolean('is_active');
+
+        Employe::create($donnees);
+
+        return redirect()->route('equipe.index')
+            ->with('success', 'Membre ajouté avec succès.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Employe $employe): View
     {
-        //
+        return view('equipe.edit', compact('employe'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Employe $employe): RedirectResponse
     {
-        //
+        $donnees = $request->validate($this->regles());
+        $donnees['is_active'] = $request->boolean('is_active');
+
+        $employe->update($donnees);
+
+        return redirect()->route('equipe.index')
+            ->with('success', 'Membre modifié.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Employe $employe): RedirectResponse
     {
-        //
+        $employe->delete();
+
+        return redirect()->route('equipe.index')
+            ->with('success', 'Membre supprimé.');
     }
 }

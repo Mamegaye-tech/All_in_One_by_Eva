@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\AccueilController;
@@ -80,6 +79,9 @@ Route::middleware(['auth', 'actif'])->group(function () {
     // CAISSE
     Route::get('/caisse', [CaisseController::class, 'index'])
         ->name('caisse.index');
+
+        Route::resource('caisse', \App\Http\Controllers\CaisseController::class)
+        ->only(['index', 'store', 'destroy']);
 
     Route::post('/caisse', [CaisseController::class, 'store'])
         ->name('caisse.store');
