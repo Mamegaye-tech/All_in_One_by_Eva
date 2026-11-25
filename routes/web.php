@@ -8,6 +8,7 @@ use App\Http\Controllers\CampagneController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepenseController;
+use App\Http\Controllers\EmployeController;
 use App\Http\Controllers\EquipeController;
 use App\Http\Controllers\ParametreController;
 use App\Http\Controllers\PrestationController;
@@ -15,8 +16,6 @@ use App\Http\Controllers\RapportController;
 use App\Http\Controllers\RendezVousController;
 use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmployeController;
-use App\Http\Controllers\ParametreController;
 
 
 // PAGE D'ACCUEIL
@@ -82,8 +81,7 @@ Route::middleware(['auth', 'actif'])->group(function () {
     Route::get('/caisse', [CaisseController::class, 'index'])
         ->name('caisse.index');
 
-<<<<<<< HEAD
-        Route::resource('caisse', \App\Http\Controllers\CaisseController::class)
+    Route::resource('caisse', CaisseController::class)
         ->only(['index', 'store', 'destroy']);
 
     Route::post('/caisse', [CaisseController::class, 'store'])
@@ -138,10 +136,17 @@ Route::middleware(['auth', 'actif'])->group(function () {
         ->name('rapports.export');
 
 
-    // EQUIPE
+    // EQUIPE / EMPLOYES
     Route::resource('equipe', EquipeController::class)
         ->parameters(['equipe' => 'employe'])
         ->except(['show']);
+
+    Route::patch('/employes/{employe}/statut', [EmployeController::class, 'toggleStatus'])
+        ->name('employes.toggle-status');
+
+    Route::resource('employes', EmployeController::class)
+        ->except('destroy')
+        ->parameters(['employes' => 'employe']);
 
 
     // PARAMETRES
@@ -151,19 +156,13 @@ Route::middleware(['auth', 'actif'])->group(function () {
     Route::put('/parametres', [ParametreController::class, 'update'])
         ->name('parametres.update');
 
-=======
-            // ÉQUIPE
-    Route::patch('/employes/{employe}/statut', [EmployeController::class, 'toggleStatus'])
-        ->name('employes.toggle-status');
+    Route::put('/parametres/salon', [ParametreController::class, 'updateSalon'])
+        ->name('parametres.salon');
 
-    Route::resource('employes', EmployeController::class)
-        ->except('destroy')
-        ->parameters(['employes' => 'employe']);
+    Route::put('/parametres/messages', [ParametreController::class, 'updateMessages'])
+        ->name('parametres.messages');
 
-            // PARAMÈTRES
-    Route::get('/parametres', [ParametreController::class, 'index'])->name('parametres.index');
-    Route::put('/parametres/salon', [ParametreController::class, 'updateSalon'])->name('parametres.salon');
-    Route::put('/parametres/messages', [ParametreController::class, 'updateMessages'])->name('parametres.messages');
-    Route::put('/parametres/regles', [ParametreController::class, 'updateRegles'])->name('parametres.regles');
->>>>>>> dev-aboubacar
+    Route::put('/parametres/regles', [ParametreController::class, 'updateRegles'])
+        ->name('parametres.regles');
+
 });

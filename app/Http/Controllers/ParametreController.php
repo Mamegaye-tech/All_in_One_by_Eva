@@ -2,54 +2,6 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
-use App\Models\ParametreSalon;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
-
-class ParametreController extends Controller
-{
-    /** Clés des paramètres et valeur par défaut. */
-    private const CHAMPS = [
-        'nom_salon'       => '',
-        'telephone'       => '',
-        'email'           => '',
-        'adresse'         => '',
-        'heure_ouverture' => '08:00',
-        'heure_fermeture' => '20:00',
-    ];
-
-    public function index(): View
-    {
-        $parametres = [];
-
-        foreach (self::CHAMPS as $cle => $defaut) {
-            $parametres[$cle] = ParametreSalon::get($cle, $defaut);
-        }
-
-        return view('parametres.index', compact('parametres'));
-    }
-
-    public function update(Request $request): RedirectResponse
-    {
-        $donnees = $request->validate([
-            'nom_salon'       => ['required', 'string', 'max:150'],
-            'telephone'       => ['nullable', 'string', 'max:30'],
-            'email'           => ['nullable', 'email', 'max:150'],
-            'adresse'         => ['nullable', 'string', 'max:255'],
-            'heure_ouverture' => ['required', 'date_format:H:i'],
-            'heure_fermeture' => ['required', 'date_format:H:i', 'after:heure_ouverture'],
-        ]);
-
-        foreach (array_keys(self::CHAMPS) as $cle) {
-            ParametreSalon::set($cle, $donnees[$cle] ?? null);
-        }
-
-        return redirect()->route('parametres.index')
-            ->with('success', 'Paramètres enregistrés.');
-    }
-=======
 use App\Enums\Permission;
 use App\Enums\TypeMessage;
 use App\Models\ModeleMessage;
@@ -74,9 +26,10 @@ class ParametreController extends Controller
     {
         $this->autoriser();
 
-       $onglet = in_array($request->query('onglet'), ['salon', 'messages', 'regles'], true)
-    ? $request->query('onglet')
-    : 'salon';
+        $onglet = in_array($request->query('onglet'), ['salon', 'messages', 'regles'], true)
+            ? $request->query('onglet')
+            : 'salon';
+
         $salon = collect(self::CLES_SALON)
             ->mapWithKeys(fn ($cle) => [$cle => (string) ParametreSalon::get($cle, '')]);
 
@@ -87,15 +40,14 @@ class ParametreController extends Controller
             'salon' => $salon,
             'modeles' => $modeles,
             'defauts' => self::MODELES_DEFAUT,
-            'variables' => self::VARIABLES,'regles' => [
-    'pause_minutes' => ParametreSalon::get('pause_minutes', 0),
-    'fidelite_fcfa_par_point' => ParametreSalon::get('fidelite_fcfa_par_point', 1000),
-    'inactivite_semaines' => ParametreSalon::get('inactivite_semaines', 6),
-    'offre_anniversaire' => (string) ParametreSalon::get('offre_anniversaire', ''),
-],
+            'variables' => self::VARIABLES,
+            'regles' => [
+                'pause_minutes' => ParametreSalon::get('pause_minutes', 0),
+                'fidelite_fcfa_par_point' => ParametreSalon::get('fidelite_fcfa_par_point', 1000),
+                'inactivite_semaines' => ParametreSalon::get('inactivite_semaines', 6),
+                'offre_anniversaire' => (string) ParametreSalon::get('offre_anniversaire', ''),
+            ],
         ]);
-
-        
     }
 
     public function updateSalon(Request $request)
@@ -161,34 +113,34 @@ class ParametreController extends Controller
             ->with('success', 'Modèles de messages enregistrés.');
     }
 
+    public function updateRegles(Request $request)
+    {
+        $this->autoriser();
+
+        $data = $request->validate([
+            'pause_minutes' => ['required', 'integer', 'between:0,120'],
+            'fidelite_fcfa_par_point' => ['required', 'integer', 'min:1'],
+            'inactivite_semaines' => ['required', 'integer', 'between:1,52'],
+            'offre_anniversaire' => ['nullable', 'string', 'max:255'],
+        ], [], [
+            'pause_minutes' => 'pause entre prestations',
+            'fidelite_fcfa_par_point' => 'FCFA par point',
+            'inactivite_semaines' => "semaines d'inactivité",
+            'offre_anniversaire' => "offre d'anniversaire",
+        ]);
+
+        foreach ($data as $cle => $valeur) {
+            ParametreSalon::set($cle, $valeur);
+        }
+
+        return redirect()->route('parametres.index', ['onglet' => 'regles'])
+            ->with('success', 'Règles du salon enregistrées.');
+    }
+
     private function autoriser(): void
     {
         $user = auth()->user();
 
         abort_unless($user->isAdmin() || $user->hasPermission(Permission::ParametresGerer), 403);
     }
-    public function updateRegles(Request $request)
-{
-    $this->autoriser();
-
-    $data = $request->validate([
-        'pause_minutes' => ['required', 'integer', 'between:0,120'],
-        'fidelite_fcfa_par_point' => ['required', 'integer', 'min:1'],
-        'inactivite_semaines' => ['required', 'integer', 'between:1,52'],
-        'offre_anniversaire' => ['nullable', 'string', 'max:255'],
-    ], [], [
-        'pause_minutes' => 'pause entre prestations',
-        'fidelite_fcfa_par_point' => 'FCFA par point',
-        'inactivite_semaines' => "semaines d'inactivité",
-        'offre_anniversaire' => "offre d'anniversaire",
-    ]);
-
-    foreach ($data as $cle => $valeur) {
-        ParametreSalon::set($cle, $valeur);
-    }
-
-    return redirect()->route('parametres.index', ['onglet' => 'regles'])
-        ->with('success', 'Règles du salon enregistrées.');
-}
->>>>>>> dev-aboubacar
 }
