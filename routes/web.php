@@ -15,6 +15,8 @@ use App\Http\Controllers\RapportController;
 use App\Http\Controllers\RendezVousController;
 use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EmployeController;
+use App\Http\Controllers\ParametreController;
 
 
 // PAGE D'ACCUEIL
@@ -80,6 +82,7 @@ Route::middleware(['auth', 'actif'])->group(function () {
     Route::get('/caisse', [CaisseController::class, 'index'])
         ->name('caisse.index');
 
+<<<<<<< HEAD
         Route::resource('caisse', \App\Http\Controllers\CaisseController::class)
         ->only(['index', 'store', 'destroy']);
 
@@ -148,4 +151,19 @@ Route::middleware(['auth', 'actif'])->group(function () {
     Route::put('/parametres', [ParametreController::class, 'update'])
         ->name('parametres.update');
 
+=======
+            // ÉQUIPE
+    Route::patch('/employes/{employe}/statut', [EmployeController::class, 'toggleStatus'])
+        ->name('employes.toggle-status');
+
+    Route::resource('employes', EmployeController::class)
+        ->except('destroy')
+        ->parameters(['employes' => 'employe']);
+
+            // PARAMÈTRES
+    Route::get('/parametres', [ParametreController::class, 'index'])->name('parametres.index');
+    Route::put('/parametres/salon', [ParametreController::class, 'updateSalon'])->name('parametres.salon');
+    Route::put('/parametres/messages', [ParametreController::class, 'updateMessages'])->name('parametres.messages');
+    Route::put('/parametres/regles', [ParametreController::class, 'updateRegles'])->name('parametres.regles');
+>>>>>>> dev-aboubacar
 });
