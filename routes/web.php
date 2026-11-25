@@ -8,6 +8,7 @@ use App\Http\Controllers\CampagneController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepenseController;
+use App\Http\Controllers\EmployeController;
 use App\Http\Controllers\EquipeController;
 use App\Http\Controllers\ParametreController;
 use App\Http\Controllers\PrestationController;
@@ -80,7 +81,7 @@ Route::middleware(['auth', 'actif'])->group(function () {
     Route::get('/caisse', [CaisseController::class, 'index'])
         ->name('caisse.index');
 
-        Route::resource('caisse', \App\Http\Controllers\CaisseController::class)
+    Route::resource('caisse', CaisseController::class)
         ->only(['index', 'store', 'destroy']);
 
     Route::post('/caisse', [CaisseController::class, 'store'])
@@ -135,10 +136,17 @@ Route::middleware(['auth', 'actif'])->group(function () {
         ->name('rapports.export');
 
 
-    // EQUIPE
+    // EQUIPE / EMPLOYES
     Route::resource('equipe', EquipeController::class)
         ->parameters(['equipe' => 'employe'])
         ->except(['show']);
+
+    Route::patch('/employes/{employe}/statut', [EmployeController::class, 'toggleStatus'])
+        ->name('employes.toggle-status');
+
+    Route::resource('employes', EmployeController::class)
+        ->except('destroy')
+        ->parameters(['employes' => 'employe']);
 
 
     // PARAMETRES
@@ -147,5 +155,14 @@ Route::middleware(['auth', 'actif'])->group(function () {
 
     Route::put('/parametres', [ParametreController::class, 'update'])
         ->name('parametres.update');
+
+    Route::put('/parametres/salon', [ParametreController::class, 'updateSalon'])
+        ->name('parametres.salon');
+
+    Route::put('/parametres/messages', [ParametreController::class, 'updateMessages'])
+        ->name('parametres.messages');
+
+    Route::put('/parametres/regles', [ParametreController::class, 'updateRegles'])
+        ->name('parametres.regles');
 
 });

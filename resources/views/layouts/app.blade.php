@@ -90,13 +90,13 @@
                     Rapports
                 </x-nav-link>
 
-                <x-nav-link route="equipe.index" icon="fa-user-tie">
+                <x-nav-link route="employes.index" pattern="employes.*" icon="fa-user-tie">
                     Equipe
                 </x-nav-link>
 
-                <x-nav-link route="parametres.index" icon="fa-gear">
+                <x-nav-link route="parametres.index" pattern="parametres.*" icon="fa-gear">
                     Paramètres
-                </x-nav-link>
+               </x-nav-link>
 
             </nav>
 
