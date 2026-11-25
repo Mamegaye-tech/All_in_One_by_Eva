@@ -13,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Render place l'application derrière un proxy HTTPS
+        $middleware->trustProxies(at: '*');
+
         $middleware->alias([
             'permission' => CheckPermission::class,
             'actif'      => EnsureUserIsActive::class,
@@ -20,7 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Visiteur non connecté -> page de connexion
         $middleware->redirectGuestsTo(fn () => route('login'));
-       
+
         $middleware->redirectUsersTo(fn () => route('dashboard'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
