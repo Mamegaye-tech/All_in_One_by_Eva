@@ -94,9 +94,9 @@
                     Equipe
                 </x-nav-link>
 
-                <x-nav-link route="#" icon="fa-gear">
+               <x-nav-link route="parametres.index" pattern="parametres.*" icon="fa-gear">
                     Paramètres
-                </x-nav-link>
+               </x-nav-link>
 
             </nav>
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\PrestationController;
 use App\Http\Controllers\RendezVousController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeController;
+use App\Http\Controllers\ParametreController;
 
 // Page d'accueil
 Route::redirect('/', '/dashboard');
@@ -77,4 +78,9 @@ Route::middleware(['auth', 'actif'])->group(function () {
         ->except('destroy')
         ->parameters(['employes' => 'employe']);
 
+            // PARAMÈTRES
+    Route::get('/parametres', [ParametreController::class, 'index'])->name('parametres.index');
+    Route::put('/parametres/salon', [ParametreController::class, 'updateSalon'])->name('parametres.salon');
+    Route::put('/parametres/messages', [ParametreController::class, 'updateMessages'])->name('parametres.messages');
+    Route::put('/parametres/regles', [ParametreController::class, 'updateRegles'])->name('parametres.regles');
 });

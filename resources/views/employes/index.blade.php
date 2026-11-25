@@ -17,7 +17,7 @@
         <div class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{{ session('error') }}</div>
     @endif
 
-    <form method="GET" class="grid gap-3 rounded-xl bg-white p-4 shadow-sm sm:grid-cols-4">
+    <!-- <form method="GET" class="grid gap-3 rounded-xl bg-white p-4 shadow-sm sm:grid-cols-4">
         <input type="text" name="q" value="{{ $filtres['q'] ?? '' }}" placeholder="Nom ou fonction…"
                class="rounded-lg border border-gray-300 px-3 py-2 text-sm sm:col-span-2">
         <select name="statut" class="rounded-lg border border-gray-300 px-3 py-2 text-sm">
@@ -29,7 +29,7 @@
             <button class="rounded-lg bg-[#780D25] px-4 py-2 text-sm text-white">Filtrer</button>
             <a href="{{ route('employes.index') }}" class="rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-white">Réinitialiser</a>
         </div>
-    </form>
+    </form> -->
 
     <div class="overflow-x-auto rounded-xl bg-white shadow-sm">
         <table class="w-full divide-y divide-gray-200 text-sm" style="width:100%">
